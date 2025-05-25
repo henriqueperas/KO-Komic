@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] CombatSystem cs;
     public Coroutine attackCoroutine;
 
+    [SerializeField] ComboCounter cc;
+
     Rigidbody2D rb;
     Vector2 moveInput;
     bool isGrounded;
@@ -106,11 +108,13 @@ public class PlayerController : MonoBehaviour
         {
             if(crouched == false && air == false)
             {
+                //print("penis");
                 // Verifica qual golpe foi solicitado
                 for (int i = 0; i < cs.attacks.Length; i++)
                 {
                     if (context.control.name.ToString() == (cs.attacks[i].inputs.ToString()))
                     {
+                        //print("penis penis");
                         cs.TryAttack(i, 0);
 
                         break;
@@ -133,13 +137,11 @@ public class PlayerController : MonoBehaviour
             }
             else if (crouched == false && air == true)
             {
-                print("crouched air deu");
                 // Verifica qual golpe foi solicitado
                 for (int i = 0; i < cs.attacksAir.Length; i++)
                 {
                     if (context.control.name.ToString() == (cs.attacksAir[i].inputs.ToString()))
                     {
-                        print("air deu");
                         cs.TryAttack(i, 2);
 
                         break;
@@ -155,6 +157,7 @@ public class PlayerController : MonoBehaviour
         
         if (context.performed && isGrounded)
         {
+            cc.AddCombo(1);
             gameObject.transform.localScale = new Vector2(1f, 0.5f);
             crouched = true;
         }
@@ -192,11 +195,12 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == enemytag)
         {
+            //cc.AddCombo(1);
             main.TakeDamage(5, cs.block); //MUDAR DEPOIS
+            
             rb.AddForce(new Vector2(5 * 100, 1 * 50));
             anim.SetTrigger("Hit");
             StopCoroutine(attackCoroutine);
-            print("AAAAAAAAAAAAAAAAAAAAAA FOI PORRAAAAAA");
         }
     }
 

@@ -13,9 +13,12 @@ public class PlayerMain : MonoBehaviour
 
     public int wins;
 
+    [SerializeField] ComboCounter cc;
+
     public void TakeDamage(int damage, bool block)
     {
-        print("PENIS PENIS PENIS PENIS");
+
+        cc.AddCombo(1);
 
         if (block)
         {
