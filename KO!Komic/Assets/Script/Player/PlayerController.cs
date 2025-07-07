@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
     public Coroutine attackCoroutine;
 
     [SerializeField] ComboCounter cc;
+    [SerializeField] Tutorial tu;
+
+    public int playerID;
 
     Rigidbody2D rb;
     Vector2 moveInput;
@@ -47,7 +50,7 @@ public class PlayerController : MonoBehaviour
     {        
         anim.SetFloat("Speed", moveInput.x);
 
-        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.525f, groundLayer);
+        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 5.525f, groundLayer);
         air = !isGrounded;
         canJump = isGrounded;
 
@@ -78,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        //print(context.control.name.ToString());
+        print(context.control.name.ToString());
 
         if (canMove)
         {
@@ -91,9 +94,10 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-
+        print(context.control.name.ToString());
         if (context.performed && isGrounded && canJump)
         {
+            print("pula pula");
             canJump = false;
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             // animação do pulo
@@ -104,6 +108,9 @@ public class PlayerController : MonoBehaviour
     public void OnAttack(InputAction.CallbackContext context)
     {
         //talvez fazer um outro OnAttack que ao invez de chamar o inputKey chama o inputXbox que vai ter um string (não queria mas é o que temos) respectivo a cada movimento
+        print(context.control.name.ToString());
+        tu.comboInput = context.control.name.ToString();
+        tu.input = true;
         if (context.performed)
         {
             if(crouched == false && air == false)
@@ -154,7 +161,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnSquat(InputAction.CallbackContext context)
     {
-        
+        print(context.control.name.ToString());
         if (context.performed && isGrounded)
         {
             cc.AddCombo(1);
@@ -195,11 +202,13 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == enemytag)
         {
+            print(enemytag + " ta batendo");
+            anim.SetTrigger("Hit");
             //cc.AddCombo(1);
             main.TakeDamage(5, cs.block); //MUDAR DEPOIS
             
             rb.AddForce(new Vector2(5 * 100, 1 * 50));
-            anim.SetTrigger("Hit");
+            
             StopCoroutine(attackCoroutine);
         }
     }

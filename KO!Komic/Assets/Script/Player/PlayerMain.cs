@@ -30,9 +30,9 @@ public class PlayerMain : MonoBehaviour
         }
 
         
-        //health = Mathf.Max(0, health);
+        health = Mathf.Max(0, health);
 
-        //healthBar.isTakingDamage = true;
+        healthBar.isTakingDamage = true;
         healthBar.UpdateHealthBar();
 
         // Reseta o delay quando o personagem para de tomar dano

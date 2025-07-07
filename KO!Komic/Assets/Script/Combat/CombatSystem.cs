@@ -14,7 +14,7 @@ public class CombatSystem : MonoBehaviour
     public Vector2 attackPosicionInspec;
 
     [Header("Combo")]
-    [SerializeField] ComboData[] combos;  // Combos disponíveis
+    public ComboData[] combos;  // Combos disponíveis
     [SerializeField] List<AttackData> currentComboSequence = new List<AttackData>();
     [SerializeField] float lastAttackTime;
 

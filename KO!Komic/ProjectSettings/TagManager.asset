@@ -8,6 +8,8 @@ TagManager:
   - Player2
   - AttackP1
   - AttackP2
+  - HurtBoxP1
+  - HurtBoxP2
   layers:
   - Default
   - TransparentFX

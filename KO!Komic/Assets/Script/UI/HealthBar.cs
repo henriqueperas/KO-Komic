@@ -24,8 +24,8 @@ public class HealthBar : MonoBehaviour
 
     public void UpdateHealthBar()
     {
-        targetHealthNormalized = (float)player.health / player.maxHealth;
-        targetHealthNormalized *= 1.75f;
+        targetHealthNormalized = player.health / player.maxHealth;
+        targetHealthNormalized *= healthBarDelay.transform.localScale.x;
         healthBarFill.fillAmount -= targetHealthNormalized; // Atualiza instantaneamente
         healthBarFill.transform.localScale = new Vector3(targetHealthNormalized, healthBarFill.transform.localScale.y, 0);
     }
