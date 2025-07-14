@@ -114,7 +114,11 @@ MonoBehaviour:
   enemy: {fileID: 8596392457357037669, guid: 316340ea500baf9479f9c984e1de4e93, type: 3}
   enemytag: AttackP2
   cs: {fileID: 2425103132267237807}
+  isRising: 0
+  isFalling: 0
+  reachedPeak: 0
   cc: {fileID: 5044187162158046306, guid: cfdf7ff8da2a16a4b9b7e809d4ea8997, type: 3}
+  tu: {fileID: 0}
   playerID: 0
   canJump: 1
 --- !u!114 &4192775572878176269
@@ -353,7 +357,7 @@ MonoBehaviour:
     m_ActionId: b36ac9dd-9b98-4d2b-8894-36e403e3714c
     m_ActionName: UI/Navigate[/XInputControllerWindows/dpad/up,/XInputControllerWindows1/dpad/up,/XInputControllerWindows/dpad/down,/XInputControllerWindows1/dpad/down,/XInputControllerWindows/dpad/left,/XInputControllerWindows1/dpad/left,/XInputControllerWindows/dpad/right,/XInputControllerWindows1/dpad/right]
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}

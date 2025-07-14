@@ -44,11 +44,6 @@ public class UIManager : MonoBehaviour
         
     }
 
-    public void CreatCharacter(GameObject test1, int test2)
-    {
-
-    }
-
     IEnumerator cooldownButton()
     {
         yield return new WaitForSeconds(1f);

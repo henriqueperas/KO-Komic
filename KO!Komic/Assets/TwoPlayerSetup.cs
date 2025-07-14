@@ -13,8 +13,13 @@ public class TwoPlayerSetup : MonoBehaviour
 
     void Start()
     {
+
         var gamepads = Gamepad.all;
-        if (gamepads.Count == 1) // >= 2
+
+        CreatePlayer(gamepads[0], 1);
+
+        /*
+        if (gamepads.Count >= 2) // >= 2
         {
             CreatePlayer(gamepads[0], 1);
             if (p2)
@@ -25,7 +30,7 @@ public class TwoPlayerSetup : MonoBehaviour
         else
         {
             Debug.LogError("Conecte 2 controles de Xbox!");
-        }
+        }*/
     }
 
     void CreatePlayer(Gamepad device, int playerID)
@@ -39,5 +44,6 @@ public class TwoPlayerSetup : MonoBehaviour
         playerInput.SwitchCurrentControlScheme("Gamepad", device);
         playerInput.GetComponent<PlayerController>().playerID = playerID; // Identifica o jogador
     }
+
 }
 
