@@ -31,11 +31,19 @@ public class SelectableButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     void Update()
     {
+        SimpleSelection();
+    }
+
+    void SimpleSelection()
+    {
         // Interpola suavemente o tamanho
         Vector2 targetScale = EventSystem.current.currentSelectedGameObject == gameObject ? selectedScale : originalScale;
         rectTransform.localScale = Vector2.Lerp(rectTransform.localScale, targetScale, scaleSpeed * Time.deltaTime);
+    }
 
-        
+    public void ColorSelect(Color color)
+    {
+        GetComponent<Image>().color = color;
     }
 
     public void OnSelect(BaseEventData eventData)

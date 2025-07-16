@@ -8,8 +8,8 @@ public class TwoPlayerSetup : MonoBehaviour
 {
     [SerializeField] bool p2;
 
-    [SerializeField] private PlayerInput player1Prefab;
-    [SerializeField] private PlayerInput player2Prefab;
+    public PlayerInput player1Prefab;
+    public PlayerInput player2Prefab;
 
     void Start()
     {
@@ -17,6 +17,7 @@ public class TwoPlayerSetup : MonoBehaviour
         var gamepads = Gamepad.all;
 
         CreatePlayer(gamepads[0], 1);
+
 
         /*
         if (gamepads.Count >= 2) // >= 2

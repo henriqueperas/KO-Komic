@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameMain : MonoBehaviour
 {
-    [SerializeField] GameObject[] characters;
+    public GameObject[] characters;
 
     GameObject player1;
     GameObject player2;
@@ -25,10 +25,7 @@ public class GameMain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (fight)
-        {
-            gameObject.GetComponent<MenuController>().enabled = false;
-        }
+        gameObject.GetComponent<MenuController>().enabled = !fight;
     }
 
     public void SpawnCharac1(int type)
@@ -47,14 +44,8 @@ public class GameMain : MonoBehaviour
 
     public void isTraining()
     {
-        if(training == false)
-        {
-            training = true;
-        }
-        else 
-        { 
-            training = false;
-        }
+        training = !training;
+
     }
 
 

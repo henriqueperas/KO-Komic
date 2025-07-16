@@ -20,14 +20,7 @@ public class PlayerMain : MonoBehaviour
 
         cc.AddCombo(1);
 
-        if (block)
-        {
-            health -= ((float)damage * 0.5f);
-        }
-        else
-        {
-            health -= damage;
-        }
+        health -= block ? ((float)damage * 0.5f) : damage;
 
         
         health = Mathf.Max(0, health);

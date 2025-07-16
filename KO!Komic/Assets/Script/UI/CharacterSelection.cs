@@ -14,6 +14,8 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
     public int characID;
     public string characName;
 
+    [SerializeField] bool p1;
+
     public float moveSpeed = 1f;
 
     [SerializeField] GameObject characPreview;
@@ -28,8 +30,6 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
 
     private void Start()
     {
-        
-
         anim = characPreview.GetComponent<Animator>();
         rectTransform = GetComponent<RectTransform>();
 
@@ -46,27 +46,7 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
 
     private void Update()
     {
-        Vector2 targetPosition;
-
-        if (controller.selected == characID)
-        {
-            targetPosition = EventSystem.current.currentSelectedGameObject == gameObject ? controller.positionsButton[1] : originalPosition;
-            rectTransform.position = Vector2.Lerp(rectTransform.position, targetPosition, moveSpeed * Time.deltaTime);
-            buttonCanvas.sortingOrder = 6; // Coloca para frente
-        }
-        else if (controller.selected < characID)
-        {
-            targetPosition = gameObject ? controller.positionsButton[2] : originalPosition;
-            rectTransform.position = Vector2.Lerp(rectTransform.position, targetPosition, moveSpeed * Time.deltaTime);
-            buttonCanvas.sortingOrder = -(controller.selected % characID) + 5; // Coloca para trás
-        }
-        else if (controller.selected > characID) 
-        {
-            targetPosition = gameObject ? controller.positionsButton[0] : originalPosition;
-            rectTransform.position = Vector2.Lerp(rectTransform.position, targetPosition, moveSpeed * Time.deltaTime);
-            buttonCanvas.sortingOrder = controller.selected % characID + 5; // Coloca para trás
-        }
-
+        controller.ChooseButton(characID, originalPosition, moveSpeed, rectTransform, buttonCanvas);
     }
 
     public void OnSelect(BaseEventData eventData)
@@ -75,6 +55,11 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
         name.text = characName;
         buttonCanvas.sortingOrder = 1; // Coloca para frente
         controller.selected = characID;
+        GameMain gm = GameObject.Find("GameManager").GetComponent<GameMain>();
+        TwoPlayerSetup tps = GameObject.Find("GameManager").GetComponent<TwoPlayerSetup>();
+
+        tps.player1Prefab = p1 ? gm.characters[characID].GetComponent<PlayerInput>() : gm.characters[characID].GetComponent<PlayerInput>();
+        //                  condição    verdadeiro                                      falço
     }
 
     public void OnDeselect(BaseEventData eventData)
