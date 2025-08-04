@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class MenuController : MonoBehaviour
                 new BaseEventData(EventSystem.current),
                 ExecuteEvents.submitHandler
             );
+
         }
     }
 

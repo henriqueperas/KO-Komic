@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMain : MonoBehaviour
 {
@@ -14,6 +16,24 @@ public class PlayerMain : MonoBehaviour
     public int wins;
 
     [SerializeField] ComboCounter cc;
+
+    UIManager uim;
+    MenuController mc;
+    GameMain gm;
+
+    public bool inPause = false;
+
+    private void Start()
+    {
+        uim = GameObject.Find("GameManager").GetComponent<UIManager>();
+        mc = GameObject.Find("GameManager").GetComponent<MenuController>();
+        gm = GameObject.Find("GameManager").GetComponent<GameMain>();
+    }
+
+    private void Update()
+    {
+        inPause = gm.isPausing;
+    }
 
     public void TakeDamage(int damage, bool block)
     {
@@ -33,6 +53,16 @@ public class PlayerMain : MonoBehaviour
         //Invoke(nameof(healthBar.ResetDamageFlag), 0.5f); // Ajuste o tempo conforme necessário
 
         //healthBar.ResetDamageFlag();
+    }
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            uim.ChangeScreen(uim.pause);
+            mc.NewButton(uim.buttonPause);
+            gm.isPausing = true;
+        }
     }
 
 }

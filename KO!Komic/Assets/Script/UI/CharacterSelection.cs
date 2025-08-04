@@ -16,6 +16,8 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
 
     [SerializeField] bool p1;
 
+    public bool ready;
+
     public float moveSpeed = 1f;
 
     [SerializeField] GameObject characPreview;
@@ -51,20 +53,41 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
 
     public void OnSelect(BaseEventData eventData)
     {
-        anim.SetInteger("type", characID);
+        //anim.SetInteger("type", characID);
         name.text = characName;
         buttonCanvas.sortingOrder = 1; // Coloca para frente
         controller.selected = characID;
         GameMain gm = GameObject.Find("GameManager").GetComponent<GameMain>();
         TwoPlayerSetup tps = GameObject.Find("GameManager").GetComponent<TwoPlayerSetup>();
 
-        tps.player1Prefab = p1 ? gm.characters[characID].GetComponent<PlayerInput>() : gm.characters[characID].GetComponent<PlayerInput>();
-        //                  condição    verdadeiro                                      falço
+        if (p1)
+        {
+            gm.player1 = gm.characters[characID];
+        }
+        else
+        {
+            gm.player1 = gm.characters[characID];
+        }
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
         buttonCanvas.sortingOrder = 0; // Coloca para trás
 
+    }
+
+    public void PlayerReady()
+    {
+        GameMain gm = GameObject.Find("GameManager").GetComponent<GameMain>();
+        if (!ready)
+        {
+            gm.playersReady += 1;
+            ready = true;
+        }
+        else
+        {
+            gm.playersReady -= 1;
+            ready = false;
+        }
     }
 }

@@ -14,12 +14,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool air = false;
 
     [Header("Enemy")]
-    [SerializeField] GameObject enemy;
-    [SerializeField] string enemytag;
+    public GameObject enemy;
+    public string enemytag;
 
     [Header("Combat")]
     [SerializeField] CombatSystem cs;
     public Coroutine attackCoroutine;
+    public bool inHit = false;
 
     [Header("Jump States")]
     public bool isRising;       // Subindo
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] ComboCounter cc;
     [SerializeField] Tutorial tu;
+    [SerializeField] FightingCamera fc;
 
     public int playerID;
 
@@ -49,6 +51,8 @@ public class PlayerController : MonoBehaviour
         //cs = GetComponent<CombatSystem>();
         anim = GetComponent<Animator>();
         main = GetComponent<PlayerMain>();
+
+        fc = GameObject.Find("MainCamera").GetComponent<FightingCamera>();
 
         anim.SetBool("isGrounded", isGrounded);
     }
@@ -94,7 +98,7 @@ public class PlayerController : MonoBehaviour
     {
         print(context.control.name.ToString());
 
-        if (canMove)
+        if (canMove && !main.inPause)
         {
             moveInput = context.ReadValue<Vector2>();
         }
@@ -103,7 +107,7 @@ public class PlayerController : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         print(context.control.name.ToString());
-        if (context.performed && isGrounded && canJump)
+        if (context.performed && isGrounded && canJump && !main.inPause)
         {
             print("pula pula");
             canJump = false;
@@ -119,7 +123,7 @@ public class PlayerController : MonoBehaviour
         print(context.control.name.ToString());
         //tu.comboInput = context.control.name.ToString();
         //tu.input = true;
-        if (context.performed)
+        if (context.performed && !main.inPause)
         {
             if(crouched == false && air == false)
             {
@@ -173,7 +177,7 @@ public class PlayerController : MonoBehaviour
     public void OnSquat(InputAction.CallbackContext context)
     {
         print(context.control.name.ToString());
-        if (context.performed && isGrounded)
+        if (context.performed && isGrounded && !main.inPause)
         {
             anim.SetBool("Crounch", true);
             cc.AddCombo(1);
@@ -191,7 +195,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnBlockParry(InputAction.CallbackContext context)
     {
-        if (context.performed && air == false)
+        if (context.performed && air == false && !main.inPause)
         {
             anim.SetBool("block", true);
             cs.canAttack = false;
@@ -238,15 +242,24 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == enemytag)
         {
-            print(enemytag + " ta batendo");
+            fc.TriggerHitEffect();
+            StartCoroutine(OnHit());
+            print($" {enemytag} ta batendo");
             anim.SetTrigger("Hit");
             //cc.AddCombo(1);
             main.TakeDamage(5, cs.block); //MUDAR DEPOIS
             
             rb.AddForce(new Vector2(5 * 100, 1 * 50));
-            
+
             StopCoroutine(attackCoroutine);
         }
+    }
+
+    public IEnumerator OnHit()
+    {
+        inHit = true;
+        yield return new WaitForFrames(5);
+        inHit = false;
     }
 
 

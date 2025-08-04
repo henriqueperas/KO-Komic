@@ -18,7 +18,7 @@ public class CombatSystem : MonoBehaviour
     [SerializeField] List<AttackData> currentComboSequence = new List<AttackData>();
     [SerializeField] float lastAttackTime;
 
-    [SerializeField]  PlayerController player;
+    [SerializeField] PlayerController player;
 
     [Header("Defender")]
     public bool block;
@@ -179,6 +179,8 @@ public class CombatSystem : MonoBehaviour
         yield return new WaitForFrames(attack.recoveryFrames);
         canAttack = true;
     }
+
+
 
 
 

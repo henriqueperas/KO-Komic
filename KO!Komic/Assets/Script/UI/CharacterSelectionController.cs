@@ -20,7 +20,7 @@ public class CharacterSelectionController : MonoBehaviour
         {
             targetPosition = EventSystem.current.currentSelectedGameObject == gameObject ? positionsButton[1] : originalPosition;
             rectTransform.position = Vector2.Lerp(rectTransform.position, targetPosition, moveSpeed * Time.deltaTime);
-            buttonCanvas.sortingOrder = 6; // Coloca para frente
+            buttonCanvas.sortingOrder = 10; // Coloca para frente
         }
         else if (selected < ID)
         {
@@ -33,6 +33,10 @@ public class CharacterSelectionController : MonoBehaviour
             targetPosition = gameObject ? positionsButton[0] : originalPosition;
             rectTransform.position = Vector2.Lerp(rectTransform.position, targetPosition, moveSpeed * Time.deltaTime);
             buttonCanvas.sortingOrder = selected % ID + 5; // Coloca para trás
+        }
+        else
+        {
+            return;
         }
     }
 

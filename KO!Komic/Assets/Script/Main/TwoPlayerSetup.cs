@@ -6,41 +6,29 @@ using UnityEngine.InputSystem.Users;
 
 public class TwoPlayerSetup : MonoBehaviour
 {
-    [SerializeField] bool p2;
-
-    public PlayerInput player1Prefab;
-    public PlayerInput player2Prefab;
+    GameMain gm;
 
     void Start()
     {
+        gm = gameObject.GetComponent<GameMain>();
+    }
 
-        var gamepads = Gamepad.all;
+    public void CreatePlayer(Gamepad device, int playerID)
+    {
+        PlayerInput playerInput = (playerID == 1) ?
+            PlayerInput.Instantiate(gm.player1.GetComponent<PlayerInput>()) :
+            PlayerInput.Instantiate(gm.player1.GetComponent<PlayerInput>());
 
-        CreatePlayer(gamepads[0], 1);
-
-
-        /*
-        if (gamepads.Count >= 2) // >= 2
+        if(playerID == 1)
         {
-            CreatePlayer(gamepads[0], 1);
-            if (p2)
-            {
-                CreatePlayer(gamepads[1], 2);
-            }
+            gm.player1 = playerInput.gameObject;
         }
         else
         {
-            Debug.LogError("Conecte 2 controles de Xbox!");
-        }*/
-    }
+            gm.player2 = playerInput.gameObject;
+        }
 
-    void CreatePlayer(Gamepad device, int playerID)
-    {
-        PlayerInput playerInput = (playerID == 1) ?
-            PlayerInput.Instantiate(player1Prefab) :
-            PlayerInput.Instantiate(player2Prefab);
-
-        print("test");
+        print("cu");
 
         playerInput.SwitchCurrentControlScheme("Gamepad", device);
         playerInput.GetComponent<PlayerController>().playerID = playerID; // Identifica o jogador

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d482b5a162b40c8468124f244ff3877f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bf23ae4e0c224c24eb5391d9620ba9d6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -371,7 +371,7 @@ MonoBehaviour:
   - {fileID: 466738155700807855}
   - {fileID: 7150187534117890690}
   comboBalloon: {fileID: 4310455346390710390}
-  currentCombo: 107
+  currentCombo: 122
   time: 5
 --- !u!1 &4779700154952141541
 GameObject:
