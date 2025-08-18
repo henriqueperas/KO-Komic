@@ -31,8 +31,12 @@ public class AttackData : ScriptableObject
     public int recoveryFrames;
     [Tooltip("Tempo de vantagem que o personagem ganha ao acertar um ataque diretamente")]
     public int hitAdvantage;
-    [Tooltip("Tempo de vantagem quando o golpe é bloqueado (negativo quando for uma desvantagem)")]
+    [Tooltip("Tempo de vantagem quando o golpe é bloqueado (para ser realmente uma vantagem deve ser menor que que o tempo do startup e do active)")]
     public int blockAdvantage;
+
+    [Header("Animation")]
+    [Tooltip("ID de animação")]
+    public int animType;
 
     [Header("Inputs")]
     [Tooltip("Input do computador")]
@@ -68,7 +72,9 @@ public class AttackData : ScriptableObject
         up,
         down,
         right,
-        left
+        left,
+        rightTrigger,
+        leftTrigger
 
     }
 

@@ -114,6 +114,7 @@ public class WallPressureSystem : MonoBehaviour
         RaycastHit2D wallHit = GetWallHit(defeatedPlayer.transform);
         if (wallHit.collider == null) yield break;
 
+        //gm.isPausing = true;
 
         // 2. Desativa a parede quebrada
         wallHit.collider.enabled = false;
@@ -130,7 +131,7 @@ public class WallPressureSystem : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        GameObject vfx = Instantiate(wallBreakVFX, wallPosition, vfxRotation);
+        GameObject vfx = Instantiate(wallBreakVFX, new Vector3(wallPosition.x, wallPosition.y, wallPosition.z - 1), vfxRotation);
         fc.GetComponent<FightingCamera>().enabled = false;
 
         int mod;
@@ -161,11 +162,17 @@ public class WallPressureSystem : MonoBehaviour
 
             defeatedPlayer.transform.position = new Vector3(defeatedPlayer.transform.position.x + (10 * mod), defeatedPlayer.transform.position.y + 2f, defeatedPlayer.transform.position.z);
 
-            yield return new WaitForSeconds(0.5f);
+            defeatedPlayer.GetComponent<PlayerController>().moveInput.x = 10;
+
+            yield return new WaitForSeconds(0.2f);
+
+            defeatedPlayer.GetComponent<PlayerController>().moveInput.x = 0;
 
             winedPlayer.transform.position = new Vector3(winedPlayer.transform.position.x + (7 * mod), winedPlayer.transform.position.y + 2f, winedPlayer.transform.position.z);
 
-            rb.AddForce(Vector2.right * 100000f, ForceMode2D.Impulse);
+            //rb.AddForce(Vector2.left * 10f, ForceMode2D.Impulse);
+            
+
 
         }
 
@@ -177,7 +184,8 @@ public class WallPressureSystem : MonoBehaviour
 
         wallHit.collider.enabled = true;
 
-
+        
+        gm.isPausing = false;
 
 
         /*

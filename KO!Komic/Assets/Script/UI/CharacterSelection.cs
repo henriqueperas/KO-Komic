@@ -20,7 +20,9 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
 
     public float moveSpeed = 1f;
 
-    [SerializeField] GameObject characPreview;
+    [SerializeField] GameObject characPreviewObj;
+
+    [SerializeField] Sprite characPreviewImage;
     Animator anim;
     [SerializeField] TextMeshProUGUI name;
 
@@ -32,7 +34,6 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
 
     private void Start()
     {
-        anim = characPreview.GetComponent<Animator>();
         rectTransform = GetComponent<RectTransform>();
 
         originalPosition = rectTransform.position;
@@ -53,7 +54,8 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
 
     public void OnSelect(BaseEventData eventData)
     {
-        //anim.SetInteger("type", characID);
+        characPreviewObj.SetActive(true);
+        characPreviewObj.GetComponent<Image>().sprite = characPreviewImage;
         name.text = characName;
         buttonCanvas.sortingOrder = 1; // Coloca para frente
         controller.selected = characID;
@@ -73,6 +75,7 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
     public void OnDeselect(BaseEventData eventData)
     {
         buttonCanvas.sortingOrder = 0; // Coloca para trás
+        characPreviewObj.SetActive(false);
 
     }
 

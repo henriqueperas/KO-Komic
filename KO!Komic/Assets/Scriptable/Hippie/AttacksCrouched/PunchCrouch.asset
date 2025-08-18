@@ -13,13 +13,16 @@ MonoBehaviour:
   m_Name: PunchCrouch
   m_EditorClassIdentifier: 
   damage: 10
-  cooldown: 0.1
-  range: {x: 1.25, y: 0.75}
+  cooldown: 0.5
+  range: {x: 1.75, y: 0.5}
   position: {x: 2.5, y: 3}
-  startupFrames: 5
-  activeFrames: 5
-  recoveryFrames: 7
+  startupFrames: 18
+  activeFrames: 6
+  recoveryFrames: 16
   hitAdvantage: 6
   blockAdvantage: 4
-  inputKey: 106
-  inputs: 9
+  animType: 1
+  inputKey: 0
+  inputs: 6
+  hitSound: {fileID: 0}
+  hitVFX: {fileID: 0}

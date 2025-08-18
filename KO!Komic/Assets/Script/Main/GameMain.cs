@@ -11,6 +11,9 @@ public class GameMain : MonoBehaviour
     public GameObject player1;
     public GameObject player2;
 
+    public HealthBar[] playerHealfBar;
+    public ComboCounter[] playerCombo;
+
     GameObject playerWiner;
 
     Vector2 player1Posi = new Vector2(-2.2f, -4.85f);
@@ -26,9 +29,13 @@ public class GameMain : MonoBehaviour
 
     public bool isPausing;
 
+
+
     UIManager uim;
     MenuController mc;
     GameObject fc;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -49,85 +56,97 @@ public class GameMain : MonoBehaviour
 
         if ((playersReady + ready) >= 1)
         {
-            fc.GetComponent<FightingCamera>().enabled = true;
-            playersReady = 0;
-
-            
-            
-
-            var gamepads = Gamepad.all;
-            print("aqui foi 1");
-            TwoPlayerSetup tps = GetComponent<TwoPlayerSetup>();
-            print("aqui foi 2");
-            tps.CreatePlayer(gamepads[0], 1);
-            print("aqui foi 3");
-
-            if (gamepads.Count >= 4) // >= 2
-            {
-                tps.CreatePlayer(gamepads[1], 2);
-            }
-            else
-            {
-                player2 = characters[Random.Range(0, characters.Length)];
-                player2 = Instantiate(player2);
-                player2.GetComponent<PlayerInput>().enabled = false;
-            }
-
-            
-
-            player1.GetComponent<PlayerController>().enemy = player2;
-            player1.GetComponent<PlayerController>().enemytag = "AttackP2";
-
-            player2.GetComponent<PlayerController>().enemy = player1;
-            player2.GetComponent<PlayerController>().enemytag = "AttackP1";
-            player2.gameObject.tag = "Player";
-
-            playersReady = -10;
+            CreatingCharacters();
         }
 
-        if(playersReady == -10) 
+        if (fight)
         {
-            if (player1.GetComponent<PlayerMain>().health <= 0)
-            {
-                player2.GetComponent<PlayerMain>().wins++;
-            }
-
-            if (player1.GetComponent<PlayerMain>().wins >= 3)
-            {
-                fc.GetComponent<FightingCamera>().enabled = false;
-                fc.transform.position = Vector3.zero;
-
-                playerWiner = player1;
-                Destroy(player1);
-
-                uim.ChangeScreen(uim.endFight);
-                mc.NewButton(uim.buttonEndFight);
-                Destroy(player1);
-                Destroy(player2);
-                print("PLAYER 1 GANHOU");
-            }
-
-            if (player2.GetComponent<PlayerMain>().health <= 0)
-            {
-                player1.GetComponent<PlayerMain>().wins++;
-            }
-
-            if (player2.GetComponent<PlayerMain>().wins >= 3)
-            {
-                fc.GetComponent<FightingCamera>().enabled = false;
-                fc.transform.position = Vector3.zero;
-
-                playerWiner = player1;
-                Destroy(player2);
-
-                uim.ChangeScreen(uim.endFight);
-                mc.NewButton(uim.buttonEndFight);
-                Destroy(player1);
-                Destroy(player2);
-                print("PLAYER 2 GANHOU");
-            }
+            EndMatch();
         }
         
+    }
+
+    void CreatingCharacters()
+    {
+        fc.GetComponent<FightingCamera>().enabled = true;
+        playersReady = 0;
+
+        var gamepads = Gamepad.all;
+
+        TwoPlayerSetup tps = GetComponent<TwoPlayerSetup>();
+
+        tps.CreatePlayer(gamepads[0], 1);
+
+
+        if (gamepads.Count >= 2) // >= 2
+        {
+            tps.CreatePlayer(gamepads[1], 2);
+        }
+        else
+        {
+            player2 = characters[Random.Range(0, characters.Length)];
+            player2 = Instantiate(player2, new Vector3(player2.transform.position.x + 10, player2.transform.position.y, player2.transform.position.z), Quaternion.identity);
+            player2.GetComponent<PlayerInput>().enabled = false;
+        }
+
+        player1.GetComponent<PlayerController>().enemy = player2;
+        player1.GetComponent<PlayerController>().enemytag = "AttackP2";
+        player1.GetComponent<PlayerMain>().healthBar = playerHealfBar[0];
+        player1.GetComponent<PlayerMain>().healthBar.player = player1.GetComponent<PlayerMain>();
+        player1.GetComponent<PlayerMain>().cc = playerCombo[0];
+
+        player2.GetComponent<PlayerController>().enemy = player1;
+        player2.GetComponent<PlayerController>().enemytag = "AttackP1";
+        player2.gameObject.tag = "Player2";
+        player2.GetComponent<PlayerMain>().healthBar = playerHealfBar[1];
+        player2.GetComponent<PlayerMain>().healthBar.player = player2.GetComponent<PlayerMain>();
+        player2.GetComponent<PlayerMain>().cc = playerCombo[1];
+
+        fight = true;
+
+    }
+
+    void EndMatch()
+    {
+        if (player1.GetComponent<PlayerMain>().health <= 0)
+        {
+            player2.GetComponent<PlayerMain>().wins++;
+        }
+
+        if (player1.GetComponent<PlayerMain>().wins >= 3)
+        {
+            fc.GetComponent<FightingCamera>().enabled = false;
+            fc.transform.position = Vector3.zero;
+
+            playerWiner = player1;
+            Destroy(player1);
+
+            uim.ChangeScreen(uim.endFight);
+            mc.NewButton(uim.buttonEndFight);
+            Destroy(player1);
+            Destroy(player2);
+            print("PLAYER 1 GANHOU");
+        }
+
+        if (player2.GetComponent<PlayerMain>().health <= 0)
+        {
+            player1.GetComponent<PlayerMain>().wins++;
+        }
+
+        if (player2.GetComponent<PlayerMain>().wins >= 3)
+        {
+            fc.GetComponent<FightingCamera>().enabled = false;
+            fc.transform.position = Vector3.zero;
+
+            playerWiner = player1;
+            Destroy(player2);
+
+            uim.ChangeScreen(uim.endFight);
+            mc.NewButton(uim.buttonEndFight);
+            Destroy(player1);
+            Destroy(player2);
+            print("PLAYER 2 GANHOU");
+        }
     }
 
     public void SpawnCharac1(int type)

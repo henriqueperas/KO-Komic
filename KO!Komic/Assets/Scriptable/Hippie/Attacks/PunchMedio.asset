@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   cooldown: 0.5
-  range: {x: 1.25, y: 0.75}
-  position: {x: 2.5, y: 3}
-  startupFrames: 5
-  activeFrames: 5
-  recoveryFrames: 7
+  range: {x: 1.5, y: 0.75}
+  position: {x: 2.25, y: 3.5}
+  startupFrames: 18
+  activeFrames: 8
+  recoveryFrames: 19
   hitAdvantage: 6
   blockAdvantage: 4
+  animType: 2
   inputKey: 0
   inputs: 6
   hitSound: {fileID: 0}

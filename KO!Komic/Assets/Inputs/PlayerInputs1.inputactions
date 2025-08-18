@@ -365,6 +365,28 @@
                 },
                 {
                     "name": "",
+                    "id": "0f89c765-226d-4257-8572-93dcd2f91e6f",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InputsXbox",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a7351d30-92f1-4116-a7a2-b4053de2e484",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InputsXbox",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "dd90002e-68b2-4307-b9f9-6724958cb41f",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",

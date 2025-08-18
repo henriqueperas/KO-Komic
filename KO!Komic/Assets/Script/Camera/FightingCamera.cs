@@ -49,7 +49,7 @@ public class FightingCamera : MonoBehaviour
 
         // Calcula posição média horizontal entre os jogadores (mas mantém a posição Y fixa)
         float averageX = (player1.position.x + player2.position.x) / 2f;
-        targetPosition = new Vector3(averageX, 1.6f, transform.position.z);
+        targetPosition = new Vector3(averageX, 0.2f, transform.position.z);
 
         // Calcula distância entre os jogadores
         float distance = Mathf.Abs(player1.position.x - player2.position.x);

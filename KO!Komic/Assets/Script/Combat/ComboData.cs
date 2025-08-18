@@ -10,7 +10,7 @@ public class ComboData : ScriptableObject
     [Tooltip("Sequencia de golpes para dar o golpe final")]
     public AttackData[] sequence;  // Ex: [Soco, Soco, Chute]
 
-    [Header("Golpe Final")]
+    [Header("Final Hit")]
     [Tooltip("Golpe final")]
     public AttackData finisher;    // Ataque final
     [Tooltip("Multiplicado de Dano")]

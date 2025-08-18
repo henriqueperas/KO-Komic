@@ -42,7 +42,6 @@ public class ComboCounter : MonoBehaviour
 
     public void AddCombo(int points)
     {
-        print("entrou");
         time = 5f;
         currentCombo += points;
         UpdateComboDisplay();
@@ -56,7 +55,6 @@ public class ComboCounter : MonoBehaviour
 
     void UpdateComboDisplay()
     {
-        print("atualizou");
         string comboStr = currentCombo.ToString();
 
         // Desativa todos os dígitos inicialmente

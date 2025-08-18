@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     [Header("Configurações")]
-    [SerializeField] PlayerMain player;
+    public PlayerMain player;
     public float delayDecreaseSpeed = 20f; // Velocidade da barra vermelha
 
     [Header("Referências UI")]

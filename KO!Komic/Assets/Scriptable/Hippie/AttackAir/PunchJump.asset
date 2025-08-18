@@ -15,11 +15,14 @@ MonoBehaviour:
   damage: 10
   cooldown: 0.1
   range: {x: 3, y: 1}
-  position: {x: 2.5, y: 1.75}
+  position: {x: 2.5, y: 5}
   startupFrames: 3
   activeFrames: 5
   recoveryFrames: 5
   hitAdvantage: 4
   blockAdvantage: 2
+  animType: 1
   inputKey: 107
   inputs: 6
+  hitSound: {fileID: 0}
+  hitVFX: {fileID: 0}

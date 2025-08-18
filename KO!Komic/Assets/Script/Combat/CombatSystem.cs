@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
 
@@ -12,6 +13,7 @@ public class CombatSystem : MonoBehaviour
     public AttackData[] attacksAir;  // Array de golpes 
     float[] nextAttackTime;  // Cooldowns individuais
     public Vector2 attackPosicionInspec;
+    [SerializeField] Vector2 attackRangeInspec;
 
     [Header("Combo")]
     public ComboData[] combos;  // Combos disponíveis
@@ -24,8 +26,9 @@ public class CombatSystem : MonoBehaviour
     public bool block;
     public bool parry;
 
-    Vector2 attackRangeInspec;
-    public Animator anim;
+    
+    //public Animator anim;
+    public FighterAnimator anim;
     public bool timeRun;
     Transform attackPoint;
     Collider2D attackCollider;
@@ -38,9 +41,10 @@ public class CombatSystem : MonoBehaviour
     void Start()
     {
         nextAttackTime = new float[attacks.Length];
-        anim = GetComponentInParent<Animator>();
+        //anim = GetComponentInParent<Animator>();
+        anim = GetComponentInParent<FighterAnimator>();
         attackPoint = GetComponent<Transform>();
-        attackCollider = GetComponent<Collider2D>();
+        attackCollider = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -53,12 +57,12 @@ public class CombatSystem : MonoBehaviour
             timeCollisor += Time.deltaTime;
         }
         
-
+        /*
         if(timeCollisor >= 1f)
         {
             attackCollider.enabled = false;
         }
-
+        */
         // Reseta o combo se o jogador demorar muito
         if (Time.time - lastAttackTime > 0.75f && currentComboSequence.Count > 0)
         {
@@ -77,16 +81,16 @@ public class CombatSystem : MonoBehaviour
             switch (attackType)
             {
                 case 0:
-                    player.attackCoroutine = StartCoroutine(OnStatup(attacks[attackIndex]));
+                    //player.attackCoroutine = StartCoroutine(OnStatup(attacks[attackIndex]));
                     //player.attackCoroutine = OnStatup(attacks[attackIndex]);
                     RegisterAttack(attacks[attackIndex]);
                     break;
                 case 1:
-                    player.attackCoroutine = StartCoroutine(OnStatup(attacksCrouched[attackIndex]));
+                    //player.attackCoroutine = StartCoroutine(OnStatup(attacksCrouched[attackIndex]));
                     RegisterAttack(attacksCrouched[attackIndex]);
                     break;
                 case 2:
-                    player.attackCoroutine = StartCoroutine(OnStatup(attacksAir[attackIndex]));
+                    //player.attackCoroutine = StartCoroutine(OnStatup(attacksAir[attackIndex]));
                     RegisterAttack(attacksAir[attackIndex]);
                     break;
             }
@@ -98,17 +102,18 @@ public class CombatSystem : MonoBehaviour
     {
         currentComboSequence.Add(attack);
         lastAttackTime = Time.time;
-        CheckCombos();
+        CheckCombos(attack);
     }
 
-    void CheckCombos()
+    void CheckCombos(AttackData attack)
     {
+        bool comboMatch = false;
         foreach (ComboData combo in combos)
         {
             if (combo.sequence.Length != currentComboSequence.Count)
                 continue;
 
-            bool comboMatch = true;
+            comboMatch = true;
             for (int i = 0; i < combo.sequence.Length; i++)
             {
                 if (currentComboSequence[i] != combo.sequence[i])
@@ -124,7 +129,12 @@ public class CombatSystem : MonoBehaviour
                 ResetCombo();
                 return;
             }
+
+
         }
+
+
+        player.attackCoroutine = StartCoroutine(OnStatup(attack));
 
         // Se a sequência for maior que o combo, reseta
         if (currentComboSequence.Count >= 4)
@@ -138,7 +148,7 @@ public class CombatSystem : MonoBehaviour
 
         StartCoroutine(OnStatup(finisher));
 
-        Debug.Log("Combo completo! Dano: " + finisher.damage);
+        //Debug.Log("Combo completo! Dano: " + finisher.damage);
     }
 
     void ResetCombo()
@@ -148,26 +158,29 @@ public class CombatSystem : MonoBehaviour
 
     void updateCollisor(Vector2 rande, Vector2 position)
     {
-        gameObject.transform.localScale = rande;
+        //gameObject.transform.localScale = rande;
         //gameObject.transform.position = position;
+        attackCollider.offset = position;
+        GetComponent<BoxCollider2D>().size = rande;
     }
     #endregion 
 
     public IEnumerator OnStatup(AttackData attack)
     {
-        print(attack.name + " foi executado");
+        //print(attack.name + " foi executado");
         // se levar golpe enquanto isso da um break (stop corrotina)
         canAttack = false;
-        anim.SetTrigger(attack.name.ToString());
-        yield return new WaitForFrames(attack.startupFrames);
+        //anim.SetTrigger(attack.name.ToString());
+        anim.PlayAttack(attack.animType);
         player.attackCoroutine = null;
+        attackRangeInspec = attack.range;
+        attackPosicionInspec = attack.position;
+        yield return new WaitForFrames(attack.startupFrames);
         StartCoroutine(OnActivate(attack));
     }
 
     public IEnumerator OnActivate(AttackData attack)
     {
-        attackRangeInspec = attack.range;
-        attackPosicionInspec = attack.position;
         attackCollider.enabled = true;
         yield return new WaitForFrames(attack.activeFrames);
         attackCollider.enabled = false;

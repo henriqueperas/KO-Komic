@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpForce = 15f;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] bool crouched = false;
-    [SerializeField] bool air = false;
+    public bool air = false;
 
     [Header("Enemy")]
     public GameObject enemy;
@@ -28,21 +29,21 @@ public class PlayerController : MonoBehaviour
     public bool reachedPeak;    // Pico do pulo
     private float previousYVelocity; // Armazena a velocidade vertical do frame anterior
 
-    [SerializeField] ComboCounter cc;
     [SerializeField] Tutorial tu;
-    [SerializeField] FightingCamera fc;
+    
+    FightingCamera fc;
 
     public int playerID;
 
     Rigidbody2D rb;
-    Vector2 moveInput;
-    bool isGrounded = true;
+    public Vector2 moveInput;
+    public bool isGrounded = true;
     [SerializeField] bool canJump = true;
     float timeJump = 0.5f;
     Animator anim;
     PlayerMain main;
 
-    bool canMove = true;
+    public bool canMove = true;
 
     // Start is called before the first frame update
     void Start()
@@ -61,6 +62,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {        
         anim.SetFloat("Speed", moveInput.x);
+        anim.SetBool("Air", air);
+        anim.SetBool("Crounch", crouched);
 
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.525f, groundLayer);
         air = !isGrounded;
@@ -73,23 +76,22 @@ public class PlayerController : MonoBehaviour
         if (enemy.transform.position.x > gameObject.transform.position.x)
         {
             GetComponent<SpriteRenderer>().flipX = false;
-            cs.gameObject.transform.position = new Vector2
-                (cs.attackPosicionInspec.x + gameObject.transform.position.x
-                , cs.attackPosicionInspec.y + gameObject.transform.position.y);
+            cs.gameObject.transform.position = new Vector2 (gameObject.transform.position.x, gameObject.transform.position.y);
         }
         else
         {
             GetComponent<SpriteRenderer>().flipX = true;
-            cs.gameObject.transform.position = new Vector2
-                ((cs.attackPosicionInspec.x * -1) + gameObject.transform.position.x
-                , cs.attackPosicionInspec.y + gameObject.transform.position.y);
+            cs.gameObject.transform.position = new Vector2 (gameObject.transform.position.x * -1, gameObject.transform.position.y);
         }
 
     }
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(moveInput.x * moveSpeed, rb.velocity.y);
+        if (!main.inPause && canMove)
+        {
+            rb.velocity = new Vector2(moveInput.x * moveSpeed, rb.velocity.y);
+        }
         // animação de movimento
     }
 
@@ -109,7 +111,6 @@ public class PlayerController : MonoBehaviour
         print(context.control.name.ToString());
         if (context.performed && isGrounded && canJump && !main.inPause)
         {
-            print("pula pula");
             canJump = false;
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             // animação do pulo
@@ -120,20 +121,19 @@ public class PlayerController : MonoBehaviour
     public void OnAttack(InputAction.CallbackContext context)
     {
         //talvez fazer um outro OnAttack que ao invez de chamar o inputKey chama o inputXbox que vai ter um string (não queria mas é o que temos) respectivo a cada movimento
-        print(context.control.name.ToString());
+        //print(context.control.name.ToString());
         //tu.comboInput = context.control.name.ToString();
         //tu.input = true;
         if (context.performed && !main.inPause)
         {
             if(crouched == false && air == false)
             {
-                //print("penis");
                 // Verifica qual golpe foi solicitado
                 for (int i = 0; i < cs.attacks.Length; i++)
                 {
                     if (context.control.name.ToString() == (cs.attacks[i].inputs.ToString()))
                     {
-                        //print("penis penis");
+                        
                         cs.TryAttack(i, 0);
 
                         break;
@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
                 // Verifica qual golpe foi solicitado
                 for (int i = 0; i < cs.attacksCrouched.Length; i++)
                 {
-                    print("penis penis");
+                    
                     if (context.control.name.ToString() == (cs.attacksCrouched[i].inputs.ToString()))
                     {
                         cs.TryAttack(i, 1);
@@ -161,7 +161,6 @@ public class PlayerController : MonoBehaviour
                 for (int i = 0; i < cs.attacksAir.Length; i++)
                 {
 
-                    print("piroca piroca");
                     if (context.control.name.ToString() == (cs.attacksAir[i].inputs.ToString()))
                     {
                         cs.TryAttack(i, 2);
@@ -179,15 +178,17 @@ public class PlayerController : MonoBehaviour
         print(context.control.name.ToString());
         if (context.performed && isGrounded && !main.inPause)
         {
-            anim.SetBool("Crounch", true);
-            cc.AddCombo(1);
+            //cc.AddCombo(1);
             //gameObject.transform.localScale = new Vector2(1f, 0.5f);
+            GetComponent<BoxCollider2D>().offset = new Vector2(-0.5f, 2f);
+            GetComponent<BoxCollider2D>().size = new Vector2(2f, 4f);
             crouched = true;
         }
         else
         {
-            anim.SetBool("Crounch", false);
             //gameObject.transform.localScale = new Vector2(1f, 1f);
+            GetComponent<BoxCollider2D>().offset = new Vector2(-0.5f,2.75f);
+            GetComponent<BoxCollider2D>().size = new Vector2(2f, 5.5f);
             crouched = false;
         }
         
@@ -221,8 +222,11 @@ public class PlayerController : MonoBehaviour
     {
         float currentYVelocity = GetComponent<Rigidbody2D>().velocity.y;
 
-        // Subindo (velocidade Y positiva e aumentando)
-        isRising = currentYVelocity > -3.991578f && currentYVelocity > previousYVelocity;
+        if (!isGrounded)
+        {
+            // Subindo (velocidade Y positiva e aumentando)
+            isRising = currentYVelocity > -3.991578f && currentYVelocity > previousYVelocity;
+        }
 
         // Pico do pulo (velocidade Y próxima de zero)
         reachedPeak = Mathf.Abs(currentYVelocity) < 0.1f && !isGrounded;
@@ -243,9 +247,10 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == enemytag)
         {
             fc.TriggerHitEffect();
-            StartCoroutine(OnHit());
+            //StartCoroutine(OnHit());
             print($" {enemytag} ta batendo");
-            anim.SetTrigger("Hit");
+            gameObject.GetComponent<HitAnimationSystem>().OnHit();
+            //anim.SetTrigger("Hit");
             //cc.AddCombo(1);
             main.TakeDamage(5, cs.block); //MUDAR DEPOIS
             

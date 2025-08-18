@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e14d725c2dbb534dbe71ff489d8edff, type: 3}
+  m_Name: KickLight
+  m_EditorClassIdentifier: 
+  damage: 10
+  cooldown: 0.1
+  range: {x: 1.75, y: 1.5}
+  position: {x: 2.5, y: 4.25}
+  startupFrames: 18
+  activeFrames: 6
+  recoveryFrames: 10
+  hitAdvantage: 4
+  blockAdvantage: 2
+  animType: 4
+  inputKey: 107
+  inputs: 7
+  hitSound: {fileID: 0}
+  hitVFX: {fileID: 0}

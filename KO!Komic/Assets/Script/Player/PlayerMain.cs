@@ -15,11 +15,13 @@ public class PlayerMain : MonoBehaviour
 
     public int wins;
 
-    [SerializeField] ComboCounter cc;
+    public ComboCounter cc;
 
     UIManager uim;
     MenuController mc;
     GameMain gm;
+
+    public Animator anim;
 
     public bool inPause = false;
 
@@ -33,6 +35,8 @@ public class PlayerMain : MonoBehaviour
     private void Update()
     {
         inPause = gm.isPausing;
+
+        anim.SetFloat("Health", health);
     }
 
     public void TakeDamage(int damage, bool block)
