@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Users;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class TwoPlayerSetup : MonoBehaviour
 {
@@ -30,15 +26,10 @@ public class TwoPlayerSetup : MonoBehaviour
         }
         else
         {
-            if(playerID != 0)
-            {
-                playerInput = PlayerInput.Instantiate(gm.player2.GetComponent<PlayerInput>(), new Vector3(gm.player2.transform.position.x + 10, gm.player2.transform.position.y, gm.player2.transform.position.z), Quaternion.identity);
-            }
-            else
-            {
-                playerInput = PlayerInput.Instantiate(gm.player1.GetComponent<PlayerInput>(), new Vector3(gm.player1.transform.position.x + 10, gm.player1.transform.position.y, gm.player1.transform.position.z), Quaternion.identity);
-            }
+            playerInput = PlayerInput.Instantiate(gm.player2.GetComponent<PlayerInput>(), new Vector3(gm.player2.transform.position.x, gm.player2.transform.position.y, gm.player2.transform.position.z), Quaternion.identity);
             gm.player2 = playerInput.gameObject;
+
+            gm.player2.transform.position = new Vector2(gm.player2.transform.position.x + 10, gm.player2.transform.position.y);
         }
 
         playerInput.SwitchCurrentControlScheme("Gamepad", device);

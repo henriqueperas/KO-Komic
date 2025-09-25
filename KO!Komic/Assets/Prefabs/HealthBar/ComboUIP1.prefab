@@ -371,7 +371,7 @@ MonoBehaviour:
   - {fileID: 466738155700807855}
   - {fileID: 7150187534117890690}
   comboBalloon: {fileID: 4310455346390710390}
-  currentCombo: 596
+  currentCombo: 597
   time: 5
 --- !u!1 &4779700154952141541
 GameObject:

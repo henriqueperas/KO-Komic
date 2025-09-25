@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class CombatSystem : MonoBehaviour
 {
@@ -17,15 +14,18 @@ public class CombatSystem : MonoBehaviour
 
     [Header("Combo")]
     public ComboData[] combos;  // Combos disponíveis
-    [SerializeField] List<AttackData> currentComboSequence = new List<AttackData>();
+    public List<AttackData> currentComboSequence = new List<AttackData>();
     [SerializeField] float lastAttackTime;
 
     [SerializeField] PlayerController player;
+
+    [SerializeField] GameObject playerObj;
 
     [Header("Defender")]
     public bool block;
     public bool parry;
 
+    public bool p2;
     
     //public Animator anim;
     public FighterAnimator anim;
@@ -34,6 +34,10 @@ public class CombatSystem : MonoBehaviour
     Collider2D attackCollider;
 
     public bool canAttack = true;
+
+    public float damage;
+    public GameObject vfx;
+    public AudioClip sfx;
 
     float timeCollisor = 0;
 
@@ -101,8 +105,14 @@ public class CombatSystem : MonoBehaviour
     public void RegisterAttack(AttackData attack)
     {
         currentComboSequence.Add(attack);
+        
         lastAttackTime = Time.time;
         CheckCombos(attack);
+
+        if (GameObject.Find("GameManager").gameObject.GetComponent<GameMain>().training == true)
+        {
+            GameObject.Find("GameManager").gameObject.GetComponent<GameMain>().tutorial.UpdateText();
+        }
     }
 
     void CheckCombos(AttackData attack)
@@ -160,13 +170,31 @@ public class CombatSystem : MonoBehaviour
     {
         //gameObject.transform.localScale = rande;
         //gameObject.transform.position = position;
-        attackCollider.offset = position;
+        //attackCollider.offset = position;
+        transform.position = position;
+
+        
+        if (p2)
+        {
+            //attackCollider.offset = new Vector2(-position.x, position.y);
+            //transform.position = new Vector2(playerObj.transform.position.x + position.x, playerObj.transform.position.y + position.y);
+
+            gameObject.transform.localScale = new Vector2(-1, 1);
+            p2 = false;
+        }
+        else
+        {
+            transform.position = new Vector2(playerObj.transform.position.x + position.x, playerObj.transform.position.y + position.y);
+        }
         GetComponent<BoxCollider2D>().size = rande;
     }
     #endregion 
 
     public IEnumerator OnStatup(AttackData attack)
     {
+        damage = attack.damage;
+        vfx = attack.hitVFX;
+        sfx = attack.audioClip;
         //print(attack.name + " foi executado");
         // se levar golpe enquanto isso da um break (stop corrotina)
         canAttack = false;

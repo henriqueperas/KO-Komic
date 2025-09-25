@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] GameObject currentScreen;
+    public GameObject currentScreen;
 
     public GameObject pause;
     public GameObject buttonPause;
     public GameObject endFight;
     public GameObject buttonEndFight;
+    public GameObject menu;
+    public GameObject buttonMenu;
 
     bool button = true;
 
@@ -26,6 +28,13 @@ public class UIManager : MonoBehaviour
             StartCoroutine(cooldownButton());
         }
         
+    }
+
+    public void ChangeToMenu()
+    {
+        ChangeScreen(menu);
+        gameObject.GetComponent<MenuController>().NewButton(buttonMenu);
+        gameObject.GetComponent<GameMain>().am.PlayMusic(gameObject.GetComponent<GameMain>().m_menu);
     }
 
     IEnumerator cooldownButton()

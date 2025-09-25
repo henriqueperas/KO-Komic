@@ -18,9 +18,14 @@ public class HighscoreInput : MonoBehaviour
     public InputActionReference navigateAction; // D-Pad/analógico
     public InputActionReference confirmAction; // Botão A
     public InputActionReference cycleLettersAction; // Gatilhos/botões laterais
+    public MenuController mc;
+
+    bool canUse = true;
 
     private void OnEnable()
     {
+        //mc.enabled = false;
+
         // Configura os inputs
         navigateAction.action.performed += OnNavigate;
         confirmAction.action.performed += OnConfirm;
@@ -33,6 +38,8 @@ public class HighscoreInput : MonoBehaviour
 
     private void OnDisable()
     {
+        mc.enabled = true;
+
         navigateAction.action.performed -= OnNavigate;
         confirmAction.action.performed -= OnConfirm;
         cycleLettersAction.action.performed -= OnCycleLetters;
@@ -41,34 +48,47 @@ public class HighscoreInput : MonoBehaviour
     // Troca a letra selecionada para cima e baixo
     void OnCycleLetters(InputAction.CallbackContext ctx)
     {
-        float input = ctx.ReadValue<float>();
-        initials[currentCharIndex] = (char)(initials[currentCharIndex] + (input > 0 ? 1 : -1));
+        if (canUse)
+        {
+            float input = ctx.ReadValue<float>();
+            initials[currentCharIndex] = (char)(initials[currentCharIndex] + (input > 0 ? 1 : -1));
 
-        // Limita às letras A-Z
-        if (initials[currentCharIndex] < 'A') initials[currentCharIndex] = 'Z';
-        if (initials[currentCharIndex] > 'Z') initials[currentCharIndex] = 'A';
+            // Limita às letras A-Z
+            if (initials[currentCharIndex] < 'A') initials[currentCharIndex] = 'Z';
+            if (initials[currentCharIndex] > 'Z') initials[currentCharIndex] = 'A';
 
-        UpdateNameDisplay();
+            UpdateNameDisplay();
+        }
     }
 
     // Navega entre as letras para os lados
     void OnNavigate(InputAction.CallbackContext ctx)
     {
-        Vector2 input = ctx.ReadValue<Vector2>();
-        if (input.x > 0.5f) currentCharIndex = Mathf.Min(currentCharIndex + 1, 2);
-        else if (input.x < -0.5f) currentCharIndex = Mathf.Max(currentCharIndex - 1, 0);
+        if (canUse)
+        {
+            Vector2 input = ctx.ReadValue<Vector2>();
+            if (input.x > 0.5f) currentCharIndex = Mathf.Min(currentCharIndex + 1, 2);
+            else if (input.x < -0.5f) currentCharIndex = Mathf.Max(currentCharIndex - 1, 0);
 
-        UpdateNameDisplay();
-        //ls.ResetLeaderboard();
+            UpdateNameDisplay();
+            //ls.ResetLeaderboard();
+        }
     }
 
     // Confirma o nome (Botão A)
     void OnConfirm(InputAction.CallbackContext ctx)
     {
-        ls.AddHighscore(new string(initials), int.Parse(scoreText.text));
+        if (canUse)
+        {
+            ls.AddHighscore(new string(initials), int.Parse(scoreText.text));
 
-        print("FOI");
-        // Carrega próxima cena ou volta ao menu
+            //gameObject.GetComponent<HighscoreInput>().enabled = false;
+
+            print("FOI");
+            // Carrega próxima cena ou volta ao menu
+
+            canUse = false;
+        }
     }
 
     void UpdateNameDisplay()

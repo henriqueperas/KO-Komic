@@ -12,17 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e14d725c2dbb534dbe71ff489d8edff, type: 3}
   m_Name: PunchJump
   m_EditorClassIdentifier: 
-  damage: 10
-  cooldown: 0.1
-  range: {x: 3, y: 1}
-  position: {x: 2.5, y: 5}
-  startupFrames: 3
-  activeFrames: 5
-  recoveryFrames: 5
+  damage: 14
+  cooldown: 1
+  range: {x: 1, y: 1.25}
+  position: {x: 1, y: 3}
+  startupFrames: 16
+  activeFrames: 6
+  recoveryFrames: 14
   hitAdvantage: 4
   blockAdvantage: 2
   animType: 1
   inputKey: 107
   inputs: 6
-  hitSound: {fileID: 0}
-  hitVFX: {fileID: 0}
+  audioClip: {fileID: 0}
+  volume: 1
+  pitch: 1
+  hitVFX: {fileID: 1935654761782432485, guid: e7541308e57d0ac42b517c415dd5959a, type: 3}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -19,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public string enemytag;
 
     [Header("Combat")]
-    [SerializeField] CombatSystem cs;
+    public CombatSystem cs;
     public Coroutine attackCoroutine;
     public bool inHit = false;
 
@@ -33,6 +34,8 @@ public class PlayerController : MonoBehaviour
     
     FightingCamera fc;
 
+    [SerializeField] AudioManager am;
+
     public int playerID;
 
     Rigidbody2D rb;
@@ -43,7 +46,14 @@ public class PlayerController : MonoBehaviour
     Animator anim;
     PlayerMain main;
 
+    public int modMoveAnim;
+
+    Vector3 hitNormal;
+
     public bool canMove = true;
+    public bool canAttack = true;
+
+    bool hit = false;
 
     // Start is called before the first frame update
     void Start()
@@ -56,12 +66,39 @@ public class PlayerController : MonoBehaviour
         fc = GameObject.Find("MainCamera").GetComponent<FightingCamera>();
 
         anim.SetBool("isGrounded", isGrounded);
+
+        
+    }
+
+    public void StartPlayer()
+    {
+        if (enemy.transform.position.x > gameObject.transform.position.x)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+            //cs.gameObject.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+            modMoveAnim = 1;
+
+            hitNormal = new Vector3(0, 0, 0);
+        }
+        else
+        {
+            //GetComponent<SpriteRenderer>().flipX = true;
+            //cs.gameObject.transform.position = new Vector2 (-gameObject.transform.position.x, gameObject.transform.position.y);
+            //gameObject.GetComponent<BoxCollider2D>().offset = new Vector2(-gameObject.GetComponent<BoxCollider2D>().offset.x,gameObject.GetComponent<BoxCollider2D>().offset.y);
+
+            gameObject.transform.localScale = new Vector2(-1, 1);
+            cs.p2 = true;
+            cs.gameObject.tag = "AttackP2";
+            modMoveAnim = -1;
+
+            hitNormal = new Vector3(0, 180, 0);
+        }
     }
 
     // Update is called once per frame
     void Update()
-    {        
-        anim.SetFloat("Speed", moveInput.x);
+    {     
+        anim.SetFloat("Speed", moveInput.x * modMoveAnim);
         anim.SetBool("Air", air);
         anim.SetBool("Crounch", crouched);
 
@@ -71,18 +108,17 @@ public class PlayerController : MonoBehaviour
 
         UpdateJumpStates();
 
-        // animações no chão
+        
 
-        if (enemy.transform.position.x > gameObject.transform.position.x)
+        if(hit && air)
         {
-            GetComponent<SpriteRenderer>().flipX = false;
-            cs.gameObject.transform.position = new Vector2 (gameObject.transform.position.x, gameObject.transform.position.y);
+            canMove = false;
         }
-        else
+        else if (hit && !air && !canMove)
         {
-            GetComponent<SpriteRenderer>().flipX = true;
-            cs.gameObject.transform.position = new Vector2 (gameObject.transform.position.x * -1, gameObject.transform.position.y);
+            StartCoroutine(RecoverCoolDown());
         }
+        
 
     }
 
@@ -124,7 +160,7 @@ public class PlayerController : MonoBehaviour
         //print(context.control.name.ToString());
         //tu.comboInput = context.control.name.ToString();
         //tu.input = true;
-        if (context.performed && !main.inPause)
+        if (context.performed && !main.inPause && canAttack)
         {
             if(crouched == false && air == false)
             {
@@ -135,7 +171,8 @@ public class PlayerController : MonoBehaviour
                     {
                         
                         cs.TryAttack(i, 0);
-
+                        canAttack = false;
+                        StartCoroutine(CoolDownAttack(cs.attacks[i].cooldown));
                         break;
                     }
                 }
@@ -150,7 +187,8 @@ public class PlayerController : MonoBehaviour
                     if (context.control.name.ToString() == (cs.attacksCrouched[i].inputs.ToString()))
                     {
                         cs.TryAttack(i, 1);
-
+                        canAttack = false;
+                        StartCoroutine(CoolDownAttack(cs.attacksCrouched[i].cooldown));
                         break;
                     }
                 }
@@ -164,7 +202,8 @@ public class PlayerController : MonoBehaviour
                     if (context.control.name.ToString() == (cs.attacksAir[i].inputs.ToString()))
                     {
                         cs.TryAttack(i, 2);
-
+                        canAttack = false;
+                        StartCoroutine(CoolDownAttack(cs.attacksAir[i].cooldown));
                         break;
                     }
                 }
@@ -183,6 +222,7 @@ public class PlayerController : MonoBehaviour
             GetComponent<BoxCollider2D>().offset = new Vector2(-0.5f, 2f);
             GetComponent<BoxCollider2D>().size = new Vector2(2f, 4f);
             crouched = true;
+            canMove = false;
         }
         else
         {
@@ -190,6 +230,7 @@ public class PlayerController : MonoBehaviour
             GetComponent<BoxCollider2D>().offset = new Vector2(-0.5f,2.75f);
             GetComponent<BoxCollider2D>().size = new Vector2(2f, 5.5f);
             crouched = false;
+            canMove = true;
         }
         
     }
@@ -198,12 +239,13 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed && air == false && !main.inPause)
         {
+            rb.velocity = Vector2.zero;
             anim.SetBool("block", true);
             cs.canAttack = false;
             canJump = false;
             canMove = false;
             cs.block = true;
-            cs.parry = true;
+            
         }
         else
         {
@@ -212,7 +254,7 @@ public class PlayerController : MonoBehaviour
             canJump = true;
             canMove = true;
             cs.block = false;
-            cs.parry = false;
+            
         }
     }
 
@@ -249,15 +291,78 @@ public class PlayerController : MonoBehaviour
             fc.TriggerHitEffect();
             //StartCoroutine(OnHit());
             print($" {enemytag} ta batendo");
-            gameObject.GetComponent<HitAnimationSystem>().OnHit();
+            if (cs.parry)
+            {
+                print("TA PORRA UM PARRY");
+                return;
+            }
+            if (!cs.block)
+            {
+                gameObject.GetComponent<FighterAnimator>().OnHit();
+
+                hit = true;
+
+                if (cs.p2)
+                {
+                    rb.AddForce(new Vector2(5 * 100, 1 * 50));
+                }
+                else
+                {
+                    rb.AddForce(new Vector2(5 * 100, 1 * 50));
+                }
+            }
             //anim.SetTrigger("Hit");
             //cc.AddCombo(1);
-            main.TakeDamage(5, cs.block); //MUDAR DEPOIS
-            
-            rb.AddForce(new Vector2(5 * 100, 1 * 50));
+            main.TakeDamage(collision.gameObject.GetComponent<CombatSystem>().damage, cs.block);
 
-            StopCoroutine(attackCoroutine);
+
+            //PONTUACAO
+
+            collision.gameObject.GetComponentInParent<PlayerMain>().score = (int)collision.gameObject.GetComponent<CombatSystem>().damage * 15;
+
+
+
+
+            Vector3 midPoint = new Vector3((transform.position.x + collision.transform.position.x) / 2f, collision.transform.position.y, collision.transform.position.z);
+            Vector3 hitNormal = (collision.transform.position - transform.position).normalized;
+
+            SpawnVFX(midPoint, hitNormal, collision.gameObject.GetComponent<CombatSystem>().vfx);
+
+            am.PlaySFX(cs.sfx);
+
+            if (collision.gameObject.GetComponent<PlayerMain>().health > 0 && attackCoroutine != null) {
+                StopCoroutine(attackCoroutine);
+            }
+            
         }
+    }
+
+    void SpawnVFX(Vector3 position, Vector3 normal, GameObject HitVFX)
+    {
+        if (HitVFX == null) return;
+
+        // Instancia o VFX na posição da colisão
+        GameObject vfxInstance = Instantiate(HitVFX, position, Quaternion.identity);
+
+        // Rotaciona o VFX para ficar perpendicular à superfície
+        vfxInstance.transform.rotation = Quaternion.LookRotation(Vector3.zero);
+
+        vfxInstance.GetComponent<ParticleSystem>().Play();
+
+        // Destroi após um tempo
+        Destroy(HitVFX, 5f);
+    }
+
+    IEnumerator Parry()
+    {
+        cs.parry = true;
+        yield return new WaitForFrames(5);
+        cs.parry = false;
+    }
+    IEnumerator CoolDownAttack(float time)
+    {
+        yield return new WaitForFrames((int)time);
+        canAttack = true;
     }
 
     public IEnumerator OnHit()
@@ -267,6 +372,11 @@ public class PlayerController : MonoBehaviour
         inHit = false;
     }
 
-
+    IEnumerator RecoverCoolDown()
+    {
+        yield return new WaitForFrames(45);
+        canMove = true;
+        hit = false;
+    }
 
 }

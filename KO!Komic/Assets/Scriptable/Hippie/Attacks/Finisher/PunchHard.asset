@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e14d725c2dbb534dbe71ff489d8edff, type: 3}
   m_Name: PunchHard
   m_EditorClassIdentifier: 
-  damage: 10
-  cooldown: 0.5
+  damage: 16
+  cooldown: 1
   range: {x: 3, y: 1.75}
-  position: {x: 2, y: 4.75}
-  startupFrames: 5
+  position: {x: 2.25, y: 4.75}
+  startupFrames: 18
   activeFrames: 5
   recoveryFrames: 7
   hitAdvantage: 6
@@ -24,5 +24,7 @@ MonoBehaviour:
   animType: 3
   inputKey: 0
   inputs: 8
-  hitSound: {fileID: 0}
-  hitVFX: {fileID: 0}
+  audioClip: {fileID: 0}
+  volume: 1
+  pitch: 1
+  hitVFX: {fileID: 6937107465121518933, guid: 00e55c14edbd9544aa18d64cea12bec7, type: 3}

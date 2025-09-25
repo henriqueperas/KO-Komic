@@ -50,6 +50,12 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
     private void Update()
     {
         controller.ChooseButton(characID, originalPosition, moveSpeed, rectTransform, buttonCanvas);
+
+        GameMain gm = GameObject.Find("GameManager").GetComponent<GameMain>();
+        if (gm.fight)
+        {
+            ready = false;
+        }
     }
 
     public void OnSelect(BaseEventData eventData)
@@ -68,7 +74,7 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
         }
         else
         {
-            gm.player1 = gm.characters[characID];
+            gm.player2 = gm.characters[characID];
         }
     }
 
@@ -81,11 +87,14 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
 
     public void PlayerReady()
     {
+        print("CU CU CU");
+
         GameMain gm = GameObject.Find("GameManager").GetComponent<GameMain>();
         if (!ready)
         {
             gm.playersReady += 1;
             ready = true;
+            print("CU CU CU2222");
         }
         else
         {

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e14d725c2dbb534dbe71ff489d8edff, type: 3}
   m_Name: KickHard
   m_EditorClassIdentifier: 
-  damage: 10
-  cooldown: 0.1
+  damage: 20
+  cooldown: 1
   range: {x: 2.25, y: 4}
   position: {x: 2.5, y: 5.25}
   startupFrames: 3
@@ -24,5 +24,7 @@ MonoBehaviour:
   animType: 6
   inputKey: 107
   inputs: 6
-  hitSound: {fileID: 0}
-  hitVFX: {fileID: 0}
+  audioClip: {fileID: 0}
+  volume: 1
+  pitch: 1
+  hitVFX: {fileID: 6937107465121518933, guid: 00e55c14edbd9544aa18d64cea12bec7, type: 3}

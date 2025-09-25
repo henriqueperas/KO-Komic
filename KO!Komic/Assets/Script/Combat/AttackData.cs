@@ -46,11 +46,15 @@ public class AttackData : ScriptableObject
 
     [Header("Sound")]
     [Tooltip("Som do golpe ao acertar o outro player")]
-    public AudioSource hitSound;
+    public AudioClip audioClip;
+    [Tooltip("Define o volume")]
+    [Range(0f, 1f)] public float volume = 1f;
+    [Tooltip("Define o pitch")]
+    [Range(0.1f, 3f)] public float pitch = 1f;
 
     [Header("VFX")]
     [Tooltip("efeito ao acertar o outro player")]
-    public ParticleSystem hitVFX;
+    public GameObject hitVFX;
     #endregion
 
 

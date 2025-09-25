@@ -9,6 +9,9 @@ public class Tutorial : MonoBehaviour
     [SerializeField] TextMeshProUGUI comboDisplayText; // UI que mostra o combo atual
     [SerializeField] GameObject player;
     [SerializeField] GameMain gameMain;
+    [SerializeField] DialogueSystem ds;
+    int currentInputCorret = 0;
+
 
     PlayerController pc;
     CombatSystem cs;
@@ -17,60 +20,105 @@ public class Tutorial : MonoBehaviour
     public string comboInput;
 
     [SerializeField] int currentCombo;
-    [SerializeField] int currentComboIput;
-    public bool input;
-
-
+    [SerializeField] int currentComboInput;
 
     // Start is called before the first frame update
     void Start()
     {
+        player = gameMain.player1;
+
         pc = player.GetComponent<PlayerController>();
         cs = player.GetComponentInChildren<CombatSystem>();
-        UpdateText(currentCombo);
 
+        UpdateText();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if(gameMain.training = true && input == true)
+        if(currentCombo >= cs.combos.Length)
         {
-            UpdateText(currentCombo);
-            input = false;
-        }
-
-        if(currentComboIput >= cs.combos[currentCombo].sequence.Length)
-        {
-            currentComboIput = 0;
-            currentCombo++;
+            ds.tutorial = true;
+            ds.PlayerInput();
+            gameObject.SetActive(false);
         }
     }
 
-    void UpdateText(int comboIndex)
+    public void UpdateText()
     {
-        comboDisplayText.text = "combo: " + cs.combos[comboIndex].name + "<br>";
-        for(int i = 0; i < cs.combos[comboIndex].sequence.Length; i++)
-        {
+        NewComboDisplay();
 
-            if(comboInput == cs.combos[comboIndex].sequence[i].inputs.ToString())
+        string currentTextCombo = "";
+        /*
+        for (int i = 0; i < cs.combos[currentCombo].sequence.Length; i++)
+        {
+            if (i > cs.currentComboSequence.Count - 1)
+            {
+                return;
+            }
+
+            if (cs.currentComboSequence[i].inputs == cs.combos[currentCombo].sequence[i].inputs)
             {
                 print("aqui foi");
-                currentComboIput++;
-                comboDisplayText.text += "<color=green>" + cs.combos[comboIndex].sequence[i].inputs + "</color>";
+                currentComboInput++;
+                currentTextCombo += "<color=green>" + cs.combos[currentCombo].sequence[i].inputs + "</color>";
                 comboInput = null;
             }
             else
             {
                 print("aqui n foi");
-                currentComboIput = 0;
-                comboDisplayText.text += "<color=red>" + cs.combos[comboIndex].sequence[i].inputs + "</color>";
+                currentComboInput = 0;
+                currentTextCombo += "<color=red>" + cs.combos[currentCombo].sequence[i].inputs + "</color>";
             }
 
-            if(i < (cs.combos[comboIndex].sequence.Length - 1))
+            if (i < (cs.combos[currentCombo].sequence.Length - 1))
             {
-                comboDisplayText.text += " + ";
+                currentTextCombo += " + ";
             }
         }
+
+        comboDisplayText.text += currentTextCombo;
+        */
+
+        for (int i = 0; i < cs.combos[currentCombo].sequence.Length; i++)
+        {
+            // Se o jogador ainda não digitou até este input
+            if (i >= cs.currentComboSequence.Count)
+            {
+                // Mostra o restante em cor neutra (ainda não tentado)
+                currentTextCombo += "<color=white>" + cs.combos[currentCombo].sequence[i].inputs + "</color>";
+            }
+            else
+            {
+                // Verifica se o input do jogador corresponde ao esperado
+                if (cs.currentComboSequence[i].inputs == cs.combos[currentCombo].sequence[i].inputs)
+                {
+                    currentTextCombo += "<color=green>" + cs.combos[currentCombo].sequence[i].inputs + "</color>";
+                    currentInputCorret++;
+                }
+                else
+                {
+                    currentTextCombo += "<color=red>" + cs.combos[currentCombo].sequence[i].inputs + "</color>";
+                }
+            }
+
+            // Adiciona o separador "+" se não for o último input
+            if (i < cs.combos[currentCombo].sequence.Length - 1)
+            {
+                currentTextCombo += " + ";
+            }
+        }
+
+        comboDisplayText.text = currentTextCombo; // Atribui o texto completo
+
+        if(currentInputCorret > cs.combos[currentCombo].sequence.Length)
+        {
+            currentCombo++;
+        }
+
+    }
+
+    void NewComboDisplay()
+    {
+        comboDisplayText.text = "combo: " + cs.combos[currentCombo].name + "<br>";
     }
 }

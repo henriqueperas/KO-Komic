@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,9 +18,16 @@ public class PlayerMain : MonoBehaviour
 
     public ComboCounter cc;
 
+    public int score;
+
     UIManager uim;
     MenuController mc;
     GameMain gm;
+
+    public RuntimeAnimatorController animLoading;
+    public RuntimeAnimatorController animFight;
+
+    CombatSystem cs;
 
     public Animator anim;
 
@@ -30,6 +38,7 @@ public class PlayerMain : MonoBehaviour
         uim = GameObject.Find("GameManager").GetComponent<UIManager>();
         mc = GameObject.Find("GameManager").GetComponent<MenuController>();
         gm = GameObject.Find("GameManager").GetComponent<GameMain>();
+        cs = GetComponentInChildren<CombatSystem>();
     }
 
     private void Update()
@@ -37,20 +46,23 @@ public class PlayerMain : MonoBehaviour
         inPause = gm.isPausing;
 
         anim.SetFloat("Health", health);
+
+        healthBar.UpdateHealthBar();
+
     }
 
-    public void TakeDamage(int damage, bool block)
+    public void TakeDamage(float damage, bool block)
     {
 
         cc.AddCombo(1);
 
-        health -= block ? ((float)damage * 0.5f) : damage;
+        health -= block ? (damage * 0.5f) : damage;
 
         
         health = Mathf.Max(0, health);
 
         healthBar.isTakingDamage = true;
-        healthBar.UpdateHealthBar();
+        
 
         // Reseta o delay quando o personagem para de tomar dano
         //CancelInvoke(nameof(healthBar.ResetDamageFlag));

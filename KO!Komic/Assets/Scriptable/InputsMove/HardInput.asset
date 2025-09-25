@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HardInput
   m_EditorClassIdentifier: 
   damage: 0
-  cooldown: 0
+  cooldown: 7
   range: {x: 0, y: 0}
   position: {x: 0, y: 0}
   startupFrames: 0

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e14d725c2dbb534dbe71ff489d8edff, type: 3}
   m_Name: PunchMedio
   m_EditorClassIdentifier: 
-  damage: 10
-  cooldown: 0.5
+  damage: 12
+  cooldown: 1
   range: {x: 1.5, y: 0.75}
   position: {x: 2.25, y: 3.5}
   startupFrames: 18
@@ -24,5 +24,7 @@ MonoBehaviour:
   animType: 2
   inputKey: 0
   inputs: 6
-  hitSound: {fileID: 0}
-  hitVFX: {fileID: 0}
+  audioClip: {fileID: 0}
+  volume: 1
+  pitch: 1
+  hitVFX: {fileID: 1935654761782432485, guid: e7541308e57d0ac42b517c415dd5959a, type: 3}

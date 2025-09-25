@@ -22,11 +22,11 @@ public class LeaderboardUI : MonoBehaviour
             if (i < highscores.Count)
             {
                 HighscoreData entry = highscores[i];
-                entryTexts[i].text = $"{i + 1}. {entry.playerName} - {entry.score}";
+                entryTexts[i].text = $"{i + 1}. {entry.playerName}             {entry.score}";
             }
             else
             {
-                entryTexts[i].text = $"{i + 1}. ---";
+                entryTexts[i].text = $"{i + 1}.              ---";
             }
         }
     }

@@ -26,6 +26,11 @@ public class FightingCamera : MonoBehaviour
     public float hitShakeIntensity = 0.1f;
     public float hitShakeDuration = 0.1f;
 
+    [Header("Limiy Scene")]
+    public float limitLeft = -10;
+    public float limitRight = 10;
+    public int multLimit = 1;
+
     Camera cam;
     float targetZoom;
     Vector3 targetPosition;
@@ -36,20 +41,37 @@ public class FightingCamera : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
-        originalZoom = cam.orthographicSize;
-        targetZoom = originalZoom;
+        //originalZoom = cam.orthographicSize;
+        //targetZoom = originalZoom;
+    }
+
+    public void ResetCamera()
+    {
+        transform.position = Vector3.Lerp(transform.position, new Vector3(0, 0, transform.position.z), Time.deltaTime * followSmoothness);
     }
 
     void LateUpdate()
     {
+        if (gm.player1 == null || gm.player2 == null)
+        {
+            return;
+        }
+
         player1 = gm.player1.transform;
         player2 = gm.player2.transform;
 
-        if (player1 == null || player2 == null) return;
+        cam.orthographicSize = 5;
+
+        if (player1 == null || player2 == null)
+        {
+            return;
+        }
 
         // Calcula posição média horizontal entre os jogadores (mas mantém a posição Y fixa)
         float averageX = (player1.position.x + player2.position.x) / 2f;
         targetPosition = new Vector3(averageX, 0.2f, transform.position.z);
+
+        targetPosition = ApplyCameraLimits(targetPosition);
 
         // Calcula distância entre os jogadores
         float distance = Mathf.Abs(player1.position.x - player2.position.x);
@@ -59,7 +81,7 @@ public class FightingCamera : MonoBehaviour
         targetZoom = Mathf.Lerp(minZoom, maxZoom, zoomRatio);
 
         // Aplica zoom suavemente
-        // cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomSpeed);
+        //cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomSpeed);
 
         // Move a câmera suavemente (apenas no eixo X)
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * followSmoothness);
@@ -101,6 +123,22 @@ public class FightingCamera : MonoBehaviour
         {
             isHitEffectActive = false;
         }
+    }
+
+    Vector3 ApplyCameraLimits(Vector3 targetPos)
+    {
+        // Calcula a metade da largura e altura da visualização da câmera
+        float cameraHeight = cam.orthographicSize;
+        float cameraWidth = cameraHeight * cam.aspect;
+
+        // Limites horizontais
+        float minX = (limitRight - 40) + cameraWidth;
+        float maxX = (limitRight * multLimit) - cameraWidth;
+
+        // Aplica os limites com clamp
+        targetPos.x = Mathf.Clamp(targetPos.x, minX, maxX);
+
+        return targetPos;
     }
 
     // Desenha gizmos para visualização no editor
