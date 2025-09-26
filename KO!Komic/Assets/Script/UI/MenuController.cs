@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem.UI;
 
 public class MenuController : MonoBehaviour
 {
@@ -48,15 +49,20 @@ public class MenuController : MonoBehaviour
 
     public void UI1Player()
     {
+        var uiModule = EventSystem.current.GetComponent<InputSystemUIInputModule>();
+        //uiModule.actionsAsset. = navigateAction
+
+
         // Ativa as ações
         navigateAction.action.Enable();
         submitAction.action.Enable();
 
         // Configura o primeiro botão selecionado
-        //EventSystem.current.SetSelectedGameObject(firstSelectedButton);
+        EventSystem.current.SetSelectedGameObject(firstSelectedButton);
 
         // Associa os eventos
         submitAction.action.performed += OnSubmit;
+
     }
 
     public void NewButton(GameObject backButton)

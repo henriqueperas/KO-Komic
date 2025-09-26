@@ -23942,7 +23942,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1413443084}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09b6d71b34c7f9b4ca2c3e7fefcf7995, type: 3}
   m_Name: 
@@ -23954,6 +23954,7 @@ MonoBehaviour:
   confirmAction: {fileID: 1604546127396883492, guid: 0648f373bf74f4041a91d8b655d05f51, type: 3}
   cycleLettersAction: {fileID: 3515958484016428740, guid: 0648f373bf74f4041a91d8b655d05f51, type: 3}
   mc: {fileID: 1943238696}
+  remach: {fileID: 1425044017}
 --- !u!1 &1418638038
 GameObject:
   m_ObjectHideFlags: 0
@@ -31575,6 +31576,7 @@ MonoBehaviour:
   - {fileID: 0}
   wallBreakVFX: {fileID: 9066793467412581282, guid: 1f5a7bdf08f06e74782579fa24860fea, type: 3}
   newBackground: {fileID: 1624284124}
+  cutsceneActive: 0
 --- !u!114 &1943238703
 MonoBehaviour:
   m_ObjectHideFlags: 0

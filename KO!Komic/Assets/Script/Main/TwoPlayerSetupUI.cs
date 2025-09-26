@@ -43,7 +43,7 @@ public class TwoPlayerSetupUI : MonoBehaviour
         {
             mc.enabled = false;
 
-            //eventSystemGeral.SetActive(false);
+            eventSystemGeral.SetActive(false);
 
             objPlayer1EventSystem.GetComponent<MyEventSystem>().firstSelectedGameObject = btPlayer1Start;
             objPlayer2EventSystem.GetComponent<MyEventSystem>().firstSelectedGameObject = btPlayer2Start;
@@ -74,12 +74,12 @@ public class TwoPlayerSetupUI : MonoBehaviour
     {
         mc.enabled = true;
 
-        //eventSystemGeral.SetActive(true);
-
         objPlayer1UI.SetActive(false);
         objPlayer1EventSystem.SetActive(false);
         objPlayer2UI.SetActive(false);
         objPlayer2EventSystem.SetActive(false);
+
+        eventSystemGeral.SetActive(true);
 
     }
 

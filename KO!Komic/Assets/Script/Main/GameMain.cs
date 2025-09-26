@@ -90,8 +90,9 @@ public class GameMain : MonoBehaviour
            // print(playersReady + ready);
         }
 
-        if (fight)
+        if (fight )
         {
+            
             EndMatch();
             FightTime();
         }
@@ -155,6 +156,7 @@ public class GameMain : MonoBehaviour
         player2.GetComponent<PlayerController>().enemy = player1;
         player2.GetComponent<PlayerController>().enemytag = "AttackP1";
         player2.gameObject.tag = "Player2";
+        player2.GetComponent<PlayerController>().p2 = true;
         player2.GetComponent<PlayerMain>().healthBar = playerHealfBar[1];
         player2.GetComponent<PlayerMain>().healthBar.player = player2.GetComponent<PlayerMain>();
         player2.GetComponent<PlayerMain>().cc = playerCombo[1];
@@ -172,13 +174,12 @@ public class GameMain : MonoBehaviour
 
         isPausing = false;
         fight = true;
+
+        mc.enabled = true;
     }
 
     void EndMatch()
     {
-
-        
-        
         if (player1.GetComponent<PlayerMain>().health <= 0)
         {
             player2.GetComponent<PlayerMain>().wins++;
@@ -192,6 +193,9 @@ public class GameMain : MonoBehaviour
 
         if (player1.GetComponent<PlayerMain>().wins >= 3)
         {
+            
+            hi.enabled = true;
+
             fc.GetComponent<FightingCamera>().enabled = false;
             //fc.transform.position = Vector3.zero;
 
@@ -201,13 +205,19 @@ public class GameMain : MonoBehaviour
 
             print("PLAYER 1 GANHOU");
 
-            mc.enabled = true;
-            mc.UI1Player();
+            
+            
 
             hi.scoreText.text = playerWiner.GetComponent<PlayerMain>().score.ToString();
         } 
         else  if (player2.GetComponent<PlayerMain>().wins >= 3)
         {
+
+            
+            hi.enabled = true;
+
+            //hi.UISetScore();
+
             fc.GetComponent<FightingCamera>().enabled = false;
             //fc.transform.position = Vector3.zero;
 
@@ -217,8 +227,8 @@ public class GameMain : MonoBehaviour
 
             print("PLAYER 2 GANHOU");
 
-            mc.enabled = true;
-            mc.UI1Player();
+            
+            
             hi.scoreText.text = playerWiner.GetComponent<PlayerMain>().score.ToString();
         }
     }
@@ -230,6 +240,8 @@ public class GameMain : MonoBehaviour
         if (playerWiner != null)
         {
             am.StopMusic();
+
+            fc.transform.position = new Vector3(0, 0, -3);
 
             uim.ChangeScreen(uim.endFight);
             mc.NewButton(uim.buttonEndFight);
@@ -370,6 +382,10 @@ public class GameMain : MonoBehaviour
         // Garante valores exatos no final
         Time.timeScale = 1f;
         //Time.fixedDeltaTime = originalFixedDeltaTime;
+        fc.transform.position = new Vector3(0, 0, -3);
+
+        yield return new WaitForSeconds(0.1f);
+
         EndFight();
     }
 

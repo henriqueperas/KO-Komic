@@ -50,7 +50,7 @@ public class FightingCamera : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, new Vector3(0, 0, transform.position.z), Time.deltaTime * followSmoothness);
     }
 
-    void LateUpdate()
+    private void Update()
     {
         if (gm.player1 == null || gm.player2 == null)
         {
@@ -71,7 +71,7 @@ public class FightingCamera : MonoBehaviour
         float averageX = (player1.position.x + player2.position.x) / 2f;
         targetPosition = new Vector3(averageX, 0.2f, transform.position.z);
 
-        targetPosition = ApplyCameraLimits(targetPosition);
+        //targetPosition = ApplyCameraLimits(targetPosition);
 
         // Calcula distância entre os jogadores
         float distance = Mathf.Abs(player1.position.x - player2.position.x);
@@ -91,6 +91,12 @@ public class FightingCamera : MonoBehaviour
         {
             HandleHitEffect();
         }
+    }
+
+
+    void LateUpdate()
+    {
+        
     }
 
     // Método para ser chamado quando um golpe acertar

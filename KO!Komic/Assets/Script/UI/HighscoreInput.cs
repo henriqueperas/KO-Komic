@@ -20,6 +20,8 @@ public class HighscoreInput : MonoBehaviour
     public InputActionReference cycleLettersAction; // Gatilhos/botões laterais
     public MenuController mc;
 
+    public GameObject remach;
+
     bool canUse = true;
 
     private void OnEnable()
@@ -38,11 +40,20 @@ public class HighscoreInput : MonoBehaviour
 
     private void OnDisable()
     {
-        mc.enabled = true;
-
         navigateAction.action.performed -= OnNavigate;
         confirmAction.action.performed -= OnConfirm;
         cycleLettersAction.action.performed -= OnCycleLetters;
+    }
+
+    public void UISetScore()
+    {
+        navigateAction.action.performed += OnNavigate;
+        confirmAction.action.performed += OnConfirm;
+        cycleLettersAction.action.performed += OnCycleLetters;
+
+        navigateAction.action.Enable();
+        confirmAction.action.Enable();
+        cycleLettersAction.action.Enable();
     }
 
     // Troca a letra selecionada para cima e baixo
@@ -78,6 +89,8 @@ public class HighscoreInput : MonoBehaviour
     // Confirma o nome (Botão A)
     void OnConfirm(InputAction.CallbackContext ctx)
     {
+        mc.enabled = true;
+
         if (canUse)
         {
             ls.AddHighscore(new string(initials), int.Parse(scoreText.text));
@@ -88,6 +101,10 @@ public class HighscoreInput : MonoBehaviour
             // Carrega próxima cena ou volta ao menu
 
             canUse = false;
+
+            
+
+            gameObject.GetComponent<HighscoreInput>().enabled = false;
         }
     }
 

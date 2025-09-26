@@ -24,6 +24,8 @@ public class PlayerMain : MonoBehaviour
     MenuController mc;
     GameMain gm;
 
+    public bool p2;
+
     public RuntimeAnimatorController animLoading;
     public RuntimeAnimatorController animFight;
 

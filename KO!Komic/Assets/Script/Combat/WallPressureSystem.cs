@@ -19,7 +19,7 @@ public class WallPressureSystem : MonoBehaviour
 
     private int[] hitCounts = new int[2];
     private bool hitDetect = true;
-    private bool cutsceneActive = false;
+    [SerializeField] bool cutsceneActive = false;
 
     private void Start()
     {
@@ -119,14 +119,14 @@ public class WallPressureSystem : MonoBehaviour
         if (wallHit.normal.x > 0) // Parede à esquerda
         {
             mod = -1;
-            fCam.limitLeft -= 41.5f;
-            fCam.limitRight -= 41.5f;
+            //fCam.limitLeft -= 41.5f;
+            //fCam.limitRight -= 41.5f;
         }
         else
         {
             mod = 1;
-            fCam.limitLeft += 41.5f;
-            fCam.limitRight += 41.5f;
+            //fCam.limitLeft += 41.5f;
+            //fCam.limitRight += 41.5f;
         }
 
         //transição da camera

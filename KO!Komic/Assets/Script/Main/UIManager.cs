@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
@@ -41,6 +42,13 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         button = true;
+    }
+
+    public void NewButton(GameObject backButton)
+    {
+        EventSystem.current.SetSelectedGameObject(backButton);
+
+        gameObject.GetComponent<MenuController>().enabled = true;
     }
 
 }

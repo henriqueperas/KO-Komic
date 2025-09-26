@@ -171,16 +171,15 @@ public class CombatSystem : MonoBehaviour
         //gameObject.transform.localScale = rande;
         //gameObject.transform.position = position;
         //attackCollider.offset = position;
-        transform.position = position;
+        //transform.position = position;
 
         
-        if (p2)
+        if (player.p2)
         {
             //attackCollider.offset = new Vector2(-position.x, position.y);
             //transform.position = new Vector2(playerObj.transform.position.x + position.x, playerObj.transform.position.y + position.y);
 
-            gameObject.transform.localScale = new Vector2(-1, 1);
-            p2 = false;
+            transform.position = new Vector2(playerObj.transform.position.x + (position.x * -1), playerObj.transform.position.y + position.y);
         }
         else
         {

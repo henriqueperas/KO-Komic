@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioManager am;
 
     public int playerID;
+    public bool p2;
 
     Rigidbody2D rb;
     public Vector2 moveInput;
