@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 24e6aedb4ae7b9a419cef9f480602578
+guid: 34030c132b0fcb343898a6a3801c8172
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -45,9 +45,9 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
-  alignment: 7
-  spritePivot: {x: 0.5, y: 0}
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 240
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -110,22 +110,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bloqueiopunkagachado-punk-anim0006_0
+      name: bloqueio-agachado0008_0
       rect:
         serializedVersion: 2
-        x: 133
-        y: 159
-        width: 1288
-        height: 1349
+        x: 764
+        y: 597
+        width: 591
+        height: 1284
       alignment: 9
-      pivot: {x: 0.635, y: 0}
+      pivot: {x: 0.295, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7ccd7e0380ae3c64ea6a881e1335f51c
-      internalID: -1643175372
+      spriteID: 7b5398fcbf9b5be4493128e26cf42ed0
+      internalID: 910698066
       vertices: []
       indices: 
       edges: []
@@ -141,10 +141,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      bloqueiopunkagachado-punk-anim0006_0: -1643175372
-      bloqueiopunkagachado-punk-anim0006_1: -817094844
-      bloqueiopunkagachado-punk-anim0006_2: -1741120756
-      bloqueiopunkagachado-punk-anim0006_3: 1949681215
+      bloqueio-agachado0008_0: 910698066
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

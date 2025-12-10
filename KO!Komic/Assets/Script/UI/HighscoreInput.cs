@@ -24,6 +24,11 @@ public class HighscoreInput : MonoBehaviour
 
     bool canUse = true;
 
+    void Update()
+    {
+        UpdateNameDisplay();
+    }
+
     private void OnEnable()
     {
         //mc.enabled = false;
@@ -36,6 +41,8 @@ public class HighscoreInput : MonoBehaviour
         navigateAction.action.Enable();
         confirmAction.action.Enable();
         cycleLettersAction.action.Enable();
+
+        print("teste");
     }
 
     private void OnDisable()
@@ -54,6 +61,8 @@ public class HighscoreInput : MonoBehaviour
         navigateAction.action.Enable();
         confirmAction.action.Enable();
         cycleLettersAction.action.Enable();
+
+        canUse = true;
     }
 
     // Troca a letra selecionada para cima e baixo
@@ -104,7 +113,7 @@ public class HighscoreInput : MonoBehaviour
 
             
 
-            gameObject.GetComponent<HighscoreInput>().enabled = false;
+            //gameObject.GetComponent<HighscoreInput>().enabled = false;
         }
     }
 

@@ -50,7 +50,7 @@ public class GameMain : MonoBehaviour
     [Header("Hightcore")]
     public HighscoreInput hi;
 
-    GameObject playerWiner;
+    public GameObject playerWiner;
 
     Vector2 player1Posi = new Vector2(-2.2f, -4.85f);
     Vector2 player2Posi = new Vector2(2.2f, -4.85f);
@@ -82,7 +82,8 @@ public class GameMain : MonoBehaviour
         if (player1 == null || player2 == null) return;
 
         //ready = (training || arena) ? 1 : 0;
-        
+
+        var gamepads = Gamepad.all;
 
         if ((playersReady + ready) >= 1)
         {
@@ -105,19 +106,26 @@ public class GameMain : MonoBehaviour
     {
         lastPlayer1 = player1;
 
+        print("por aqui está indo");
+
         //gameObject.GetComponent<MenuController>().enabled = !fight;
         fc.GetComponent<FightingCamera>().enabled = true;
         playersReady = 0;
 
         var gamepads = Gamepad.all;
 
-        TwoPlayerSetup tps = GetComponent<TwoPlayerSetup>();
+        print("agora aqui");
 
-        tps.CreatePlayer(gamepads[0], 1);
 
         print(gamepads.Count);
 
-        if (gamepads.Count >= 2) // >= 2
+        TwoPlayerSetup tps = GetComponent<TwoPlayerSetup>();
+
+        
+
+        
+
+        if (gamepads.Count > 1 && !arena) // >= 2
         {
             //player2 = characters[0];
             lastPlayer2 = player2;
@@ -125,16 +133,20 @@ public class GameMain : MonoBehaviour
         }
         else
         {
-            player2 = characters[0];
+            print("teste teste");
+            //player2 = characters[0];
             lastPlayer2 = player2;
             player2 = Instantiate(player2, new Vector3(player2.transform.position.x + 10, player2.transform.position.y, player2.transform.position.z), Quaternion.identity);
             player2.GetComponent<PlayerInput>().enabled = false;
+            
+
+            
         }
 
-        print("teste");
+
+        tps.CreatePlayer(gamepads[0], 1);
 
         print(gamepads.Count);
-
 
         //PrepareCharacter();
 
@@ -176,44 +188,50 @@ public class GameMain : MonoBehaviour
         fight = true;
 
         mc.enabled = true;
+
+        if (arena)
+        {
+            player2.AddComponent<EnemyAI>();
+            player2.GetComponent<EnemyAI>().canFight = true;
+        }
+
+        //player2.GetComponent<EnemyAI>().canFight = true;
     }
 
     void EndMatch()
     {
-        if (player1.GetComponent<PlayerMain>().health <= 0)
+        if (player1.GetComponent<PlayerMain>().health <= 0 && player1.GetComponent<PlayerMain>().wins < 4)
         {
-            player2.GetComponent<PlayerMain>().wins++;
+            player2.GetComponent<PlayerMain>().wins+=5;
             StartCoroutine(SlowMotionRoutine());
         }
-        else if (player2.GetComponent<PlayerMain>().health <= 0)
+        else if (player2.GetComponent<PlayerMain>().health <= 0 && player2.GetComponent<PlayerMain>().wins < 4)
         {
-            player1.GetComponent<PlayerMain>().wins++;
+            player1.GetComponent<PlayerMain>().wins+=5;
             StartCoroutine(SlowMotionRoutine());
         }
 
         if (player1.GetComponent<PlayerMain>().wins >= 3)
         {
-            
+            playerWiner = player1;
+
             hi.enabled = true;
 
             fc.GetComponent<FightingCamera>().enabled = false;
             //fc.transform.position = Vector3.zero;
 
-            playerWiner = player1;
+            
 
             StartCoroutine(SlowMotionRoutine());
 
             print("PLAYER 1 GANHOU");
 
-            
-            
-
             hi.scoreText.text = playerWiner.GetComponent<PlayerMain>().score.ToString();
         } 
         else  if (player2.GetComponent<PlayerMain>().wins >= 3)
         {
+            playerWiner = player2;
 
-            
             hi.enabled = true;
 
             //hi.UISetScore();
@@ -221,36 +239,35 @@ public class GameMain : MonoBehaviour
             fc.GetComponent<FightingCamera>().enabled = false;
             //fc.transform.position = Vector3.zero;
 
-            playerWiner = player2;
+            
 
             StartCoroutine(SlowMotionRoutine());
 
             print("PLAYER 2 GANHOU");
 
-            
-            
             hi.scoreText.text = playerWiner.GetComponent<PlayerMain>().score.ToString();
         }
     }
 
     public void EndFight()
     {
-        
-
         if (playerWiner != null)
         {
+            uim.ChangeScreen(uim.endFight);
+            mc.NewButton(uim.buttonEndFight);
+
             am.StopMusic();
 
             fc.transform.position = new Vector3(0, 0, -3);
 
-            uim.ChangeScreen(uim.endFight);
-            mc.NewButton(uim.buttonEndFight);
             Destroy(player1);
             Destroy(player2);
             player1 = null;
             player2 = null;
 
             hi.enabled = true;
+
+            playerWiner = null;
         }
     }
 
@@ -275,23 +292,16 @@ public class GameMain : MonoBehaviour
 
     public void ReStart()
     {
-        if(player1 != null && player2 != null)
-        {
-            Destroy(player1);
-            Destroy(player2);
-            player1 = null;
-            player2 = null;
-        }
-
         fightCurrentTime = fightTimer;
         player1 = lastPlayer1;
         player2 = lastPlayer2;
 
         GetComponent<Loading>().LoadClear();
 
-        playerWiner = null;
-
         fc.transform.position = new Vector3(0f, 0f, fc.transform.position.z);
+        fc.GetComponent<FightingCamera>().ResetCamera();
+
+        playerWiner = null;
     }
 
     public void ResetCamera()
@@ -317,8 +327,20 @@ public class GameMain : MonoBehaviour
 
     public void isTraining()
     {
-        training = !training;
+        training = true;
 
+    }
+
+    public void inArena()
+    {
+        arena = true;
+
+    }
+
+    public void ResetStatus()
+    {
+        training = false;
+        arena = false;
     }
 
     public IEnumerator SlowMotionRoutine()
@@ -386,7 +408,18 @@ public class GameMain : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
+        hi.UISetScore();
+
         EndFight();
+    }
+
+    public void ReturnToMenu()
+    {
+        am.PlayMusic(m_menu);
+        ReStart();
+        uim.ChangeToMenu();
+        arena = false;
+        training = false;
     }
 
 

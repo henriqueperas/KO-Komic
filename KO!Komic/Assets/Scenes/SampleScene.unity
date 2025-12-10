@@ -8784,6 +8784,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 607399010}
   m_CullTransparentMesh: 1
+--- !u!1001 &618866363
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 832494039356695531, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -20.271152
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494039356695531, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.594789
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494039356695531, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494039356695531, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494039356695531, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494039356695531, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494039356695531, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494039356695531, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494039356695531, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494039356695531, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3318020294966099676, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_Name
+      value: Hippe
+      objectReference: {fileID: 0}
+    - target: {fileID: 3318020294966099676, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7716769510882829063, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7af87eb39751e374a917206f0cbf8e51, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
 --- !u!1 &622742970
 GameObject:
   m_ObjectHideFlags: 0
@@ -11858,7 +11923,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &750550192
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15091,7 +15156,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8701c244b6b3b1f48aeb5844cea9e6de, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4bae892ef7df3cf4e86bd2e110bdd8c6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -16860,6 +16925,9 @@ MonoBehaviour:
   player: {fileID: 808291766918656871, guid: 6f6180bdb2386c14bab8eb8e9ab1ecba, type: 3}
   gameMain: {fileID: 1943238699}
   ds: {fileID: 1943238704}
+  HUD: {fileID: 591111164}
+  tutorial: {fileID: 1778700096}
+  gameManager: {fileID: 1943238695}
   comboInput: 
   currentCombo: 0
   currentComboInput: 0
@@ -17495,35 +17563,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1943238699}
         m_TargetAssemblyTypeName: GameMain, Assembly-CSharp
-        m_MethodName: ReStart
+        m_MethodName: ReturnToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1943238697}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ChangeScreen
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 796119996}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 7
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1943238696}
-        m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
-        m_MethodName: NewButton
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 564743629}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -19697,6 +19741,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1943238699}
         m_TargetAssemblyTypeName: GameMain, Assembly-CSharp
         m_MethodName: ReStart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1943238699}
+        m_TargetAssemblyTypeName: GameMain, Assembly-CSharp
+        m_MethodName: ResetStatus
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -22368,6 +22424,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1943238699}
+        m_TargetAssemblyTypeName: GameMain, Assembly-CSharp
+        m_MethodName: inArena
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1351952233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23564,7 +23632,7 @@ MonoBehaviour:
   m_ActionsAsset: {fileID: -944628639613478452, guid: 98ca1c9090fcbd442a8e5344341dfbd6, type: 3}
   m_PointAction: {fileID: 0}
   m_MoveAction: {fileID: -174130631385079146, guid: 98ca1c9090fcbd442a8e5344341dfbd6, type: 3}
-  m_SubmitAction: {fileID: 0}
+  m_SubmitAction: {fileID: -4608784100112364498, guid: 98ca1c9090fcbd442a8e5344341dfbd6, type: 3}
   m_CancelAction: {fileID: 0}
   m_LeftClickAction: {fileID: 0}
   m_MiddleClickAction: {fileID: 0}
@@ -24145,18 +24213,6 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 2072694954}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1943238697}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ChangeScreen
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 591111164}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 7
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -31424,7 +31480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigateAction: {fileID: -661260649983719876, guid: 0648f373bf74f4041a91d8b655d05f51, type: 3}
   submitAction: {fileID: 1604546127396883492, guid: 0648f373bf74f4041a91d8b655d05f51, type: 3}
-  firstSelectedButton: {fileID: 564743629}
+  firstSelectedButton: {fileID: 1129246699}
 --- !u!114 &1943238697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31475,7 +31531,7 @@ MonoBehaviour:
   - {fileID: 3318020294966099676, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
   - {fileID: 3318020294966099676, guid: fa259e34215486c479a4b793b3ff7f24, type: 3}
   player1: {fileID: 3318020294966099676, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
-  player2: {fileID: 3318020294966099676, guid: ad683ac78860c344fa4c235bc22fa5be, type: 3}
+  player2: {fileID: 3318020294966099676, guid: fa259e34215486c479a4b793b3ff7f24, type: 3}
   fightTimer: 120
   fightCurrentTime: 0
   fightTimerText: {fileID: 703679185}
@@ -31522,6 +31578,7 @@ MonoBehaviour:
   trainingScreen: {fileID: 1778700096}
   tutorial: {fileID: 1048342384}
   hi: {fileID: 1413443086}
+  playerWiner: {fileID: 0}
   lastPlayer1: {fileID: 0}
   lastPlayer2: {fileID: 0}
 --- !u!4 &1943238700
@@ -31602,7 +31659,7 @@ MonoBehaviour:
   charactersLoad: []
   progress: 0
   progressMax: 0
-  newScreen: {fileID: 0}
+  newScreen: {fileID: 591111164}
   gm: {fileID: 0}
 --- !u!114 &1943238704
 MonoBehaviour:
@@ -31685,10 +31742,14 @@ MonoBehaviour:
       quebra a cara de todo mundo"
     customSound: {fileID: 0}
     jokerSprite: {fileID: 1118883433, guid: dc78e53bf98bf5040812c303887ef6dc, type: 3}
+  - text: "Isso \xE9 tudo que eu posso de ensinar por agora, ent\xE3o vai l\xE1 que
+      quebra a cara de todo mundo"
+    customSound: {fileID: 0}
+    jokerSprite: {fileID: 1118883433, guid: dc78e53bf98bf5040812c303887ef6dc, type: 3}
   dialogueIndex: 0
   tutorialObj: {fileID: 1048342382}
   tutorial: 0
-  UIM: {fileID: 0}
+  gm: {fileID: 1943238699}
 --- !u!114 &1943238705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34639,3 +34700,4 @@ SceneRoots:
   - {fileID: 812835359}
   - {fileID: 1625432382}
   - {fileID: 2141630157}
+  - {fileID: 618866363}

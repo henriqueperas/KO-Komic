@@ -87,14 +87,12 @@ public class CharacterSelection : MonoBehaviour, ISelectHandler, IDeselectHandle
 
     public void PlayerReady()
     {
-        print("CU CU CU");
 
         GameMain gm = GameObject.Find("GameManager").GetComponent<GameMain>();
         if (!ready)
         {
             gm.playersReady += 1;
             ready = true;
-            print("CU CU CU2222");
         }
         else
         {

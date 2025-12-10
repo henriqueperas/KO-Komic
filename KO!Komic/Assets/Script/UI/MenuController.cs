@@ -17,14 +17,14 @@ public class MenuController : MonoBehaviour
     void OnEnable()
     {
         // Ativa as ações
-        navigateAction.action.Enable();
-        submitAction.action.Enable();
+        //navigateAction.action.Enable();
+        //submitAction.action.Enable();
 
         // Configura o primeiro botão selecionado
         EventSystem.current.SetSelectedGameObject(firstSelectedButton);
 
         // Associa os eventos
-        submitAction.action.performed += OnSubmit;
+        //submitAction.action.performed += OnSubmit;
     }
 
     void OnDisable()
@@ -67,6 +67,7 @@ public class MenuController : MonoBehaviour
 
     public void NewButton(GameObject backButton)
     {
+        print(backButton);
         EventSystem.current.SetSelectedGameObject(backButton);
     }
 }

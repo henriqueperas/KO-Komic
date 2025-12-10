@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -115,6 +116,7 @@ public class Loading : MonoBehaviour
 
         if (gm.training)
         {
+            gm.player1.GetComponent<PlayerInput>().enabled = false;
             gm.trainingScreen.SetActive(true);
         }
         

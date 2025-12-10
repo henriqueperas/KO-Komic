@@ -23,18 +23,6 @@ public class TwoPlayerSetupUI : MonoBehaviour
 
     public MenuController mc;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void StarUI2Player()
     {
         var gamepads = Gamepad.all;
@@ -56,7 +44,7 @@ public class TwoPlayerSetupUI : MonoBehaviour
             if (p1)
             {
                 //executa para o p1
-                CreatePlayerForUI(gamepads[1], objPlayer1UI, objPlayer1EventSystem);
+                CreatePlayerForUI(gamepads[0], objPlayer1UI, objPlayer1EventSystem);
                 p1 = false;
             }
 

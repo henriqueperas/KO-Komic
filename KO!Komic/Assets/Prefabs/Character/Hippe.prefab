@@ -306,7 +306,7 @@ PrefabInstance:
       objectReference: {fileID: 7716769510882829063}
     - target: {fileID: 4192775572878176269, guid: 1ef4784df2b5ae844a3db219460fa951, type: 3}
       propertyPath: health
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4192775572878176269, guid: 1ef4784df2b5ae844a3db219460fa951, type: 3}
       propertyPath: animFight
@@ -322,7 +322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4192775572878176269, guid: 1ef4784df2b5ae844a3db219460fa951, type: 3}
       propertyPath: maxHealth
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4192775572878176269, guid: 1ef4784df2b5ae844a3db219460fa951, type: 3}
       propertyPath: animLoading

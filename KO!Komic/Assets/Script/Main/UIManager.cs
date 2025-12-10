@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,17 +17,12 @@ public class UIManager : MonoBehaviour
 
     public void ChangeScreen(GameObject screen)
     {
-        print("foi");
+        print(screen);
 
-        if(button)
-        {
-            currentScreen.SetActive(false);
-            screen.SetActive(true);
-            currentScreen = screen;
-            button = false;
-            StartCoroutine(cooldownButton());
-        }
-        
+        screen.SetActive(true);
+        currentScreen.SetActive(false);
+        currentScreen = screen;
+
     }
 
     public void ChangeToMenu()
@@ -36,19 +30,6 @@ public class UIManager : MonoBehaviour
         ChangeScreen(menu);
         gameObject.GetComponent<MenuController>().NewButton(buttonMenu);
         gameObject.GetComponent<GameMain>().am.PlayMusic(gameObject.GetComponent<GameMain>().m_menu);
-    }
-
-    IEnumerator cooldownButton()
-    {
-        yield return new WaitForSeconds(1f);
-        button = true;
-    }
-
-    public void NewButton(GameObject backButton)
-    {
-        EventSystem.current.SetSelectedGameObject(backButton);
-
-        gameObject.GetComponent<MenuController>().enabled = true;
     }
 
 }

@@ -31,8 +31,8 @@ public class PlayerController : MonoBehaviour
     private float previousYVelocity; // Armazena a velocidade vertical do frame anterior
 
     [SerializeField] Tutorial tu;
-    
-    FightingCamera fc;
+
+    [SerializeField] FightingCamera fc;
 
     [SerializeField] AudioManager am;
 
@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
 
     public int modMoveAnim;
 
-    Vector3 hitNormal;
+    Vector3 hitRotation;
 
     public bool canMove = true;
     public bool canAttack = true;
@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
             //cs.gameObject.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
             modMoveAnim = 1;
 
-            hitNormal = new Vector3(0, 0, 0);
+            hitRotation = new Vector3(0, -90, 0);
         }
         else
         {
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
             cs.gameObject.tag = "AttackP2";
             modMoveAnim = -1;
 
-            hitNormal = new Vector3(0, 180, 0);
+            hitRotation = new Vector3(0, 90, 0);
         }
     }
 
@@ -321,9 +321,6 @@ public class PlayerController : MonoBehaviour
 
             collision.gameObject.GetComponentInParent<PlayerMain>().score = (int)collision.gameObject.GetComponent<CombatSystem>().damage * 15;
 
-
-
-
             Vector3 midPoint = new Vector3((transform.position.x + collision.transform.position.x) / 2f, collision.transform.position.y, collision.transform.position.z);
             Vector3 hitNormal = (collision.transform.position - transform.position).normalized;
 
@@ -346,12 +343,12 @@ public class PlayerController : MonoBehaviour
         GameObject vfxInstance = Instantiate(HitVFX, position, Quaternion.identity);
 
         // Rotaciona o VFX para ficar perpendicular à superfície
-        vfxInstance.transform.rotation = Quaternion.LookRotation(Vector3.zero);
+        vfxInstance.transform.Rotate(hitRotation);
 
         vfxInstance.GetComponent<ParticleSystem>().Play();
 
         // Destroi após um tempo
-        Destroy(HitVFX, 5f);
+        Destroy(vfxInstance, 5f);
     }
 
     IEnumerator Parry()

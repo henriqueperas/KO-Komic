@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class FightingCamera : MonoBehaviour
 {
-    [Header("Jogadores")]
+    [Header("Players")]
     [SerializeField] GameMain gm;
     public Transform player1;
     public Transform player2;
 
-    [Header("Configurações de Zoom")]
+    [Header("Zoom Conf")]
     public float minZoom = 5f;
     public float maxZoom = 10f;
     public float zoomSpeed = 2f;
     public float minDistance = 4f;
     public float maxDistance = 15f;
 
-    [Header("Configurações de Posição")]
+    [Header("Position Conf")]
     public float yOffset = 1f;
     public float followSmoothness = 5f;
 
-    [Header("Efeito de Hit")]
+    [Header("HFX")]
     public float hitZoomAmount = 0.5f;
     public float hitZoomDuration = 0.2f;
     public float hitShakeIntensity = 0.1f;
     public float hitShakeDuration = 0.1f;
 
-    [Header("Limiy Scene")]
+    [Header("Limit Scene")]
     public float limitLeft = -10;
     public float limitRight = 10;
     public int multLimit = 1;
@@ -36,10 +36,11 @@ public class FightingCamera : MonoBehaviour
     Vector3 targetPosition;
     float originalZoom;
     bool isHitEffectActive;
-    float hitEffectTimer;
+    float hitEffectTimer = 0;
 
     void Start()
     {
+        hitEffectTimer = hitZoomDuration + 5;
         cam = GetComponent<Camera>();
         //originalZoom = cam.orthographicSize;
         //targetZoom = originalZoom;
@@ -62,16 +63,11 @@ public class FightingCamera : MonoBehaviour
 
         cam.orthographicSize = 5;
 
-        if (player1 == null || player2 == null)
-        {
-            return;
-        }
-
         // Calcula posição média horizontal entre os jogadores (mas mantém a posição Y fixa)
         float averageX = (player1.position.x + player2.position.x) / 2f;
         targetPosition = new Vector3(averageX, 0.2f, transform.position.z);
 
-        //targetPosition = ApplyCameraLimits(targetPosition);
+        targetPosition = ApplyCameraLimits(targetPosition);
 
         // Calcula distância entre os jogadores
         float distance = Mathf.Abs(player1.position.x - player2.position.x);
@@ -86,23 +82,12 @@ public class FightingCamera : MonoBehaviour
         // Move a câmera suavemente (apenas no eixo X)
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * followSmoothness);
 
-        // Trata efeito de hit
-        if (isHitEffectActive)
-        {
-            HandleHitEffect();
-        }
-    }
-
-
-    void LateUpdate()
-    {
-        
+        HandleHitEffect();
     }
 
     // Método para ser chamado quando um golpe acertar
     public void TriggerHitEffect()
     {
-        isHitEffectActive = true;
         hitEffectTimer = 0f;
     }
 
@@ -124,10 +109,6 @@ public class FightingCamera : MonoBehaviour
                 float shakeY = Random.Range(-hitShakeIntensity, hitShakeIntensity);
                 transform.position += new Vector3(shakeX, shakeY, 0);
             }
-        }
-        else
-        {
-            isHitEffectActive = false;
         }
     }
 

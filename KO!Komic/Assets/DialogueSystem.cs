@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem.HID;
 
 public class DialogueSystem : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class DialogueSystem : MonoBehaviour
     bool isTyping = false;
     Coroutine typingCoroutine;
 
-    [SerializeField] UIManager UIM;
+    [SerializeField] GameMain gm;
 
     [System.Serializable]
     public class DialogueLine
@@ -70,9 +71,18 @@ public class DialogueSystem : MonoBehaviour
             return;
         }
 
-        if(dialogueIndex > dialogueList.Count)
+        if(dialogueIndex >= dialogueList.Count)
         {
-            UIM.ChangeToMenu();
+            //gm.ReturnToMenu();
+            //gm.isTraining();
+
+            
+            Destroy(gm.player1);
+            Destroy(gm.player2);
+
+            gm.GetComponent<UIManager>().ChangeToMenu();
+            tutorialObj.GetComponent<Tutorial>().HUD.SetActive(false);
+            tutorialObj.GetComponent<Tutorial>().tutorial.SetActive(false);
         }
 
         if (GetComponent<GameMain>().training && GetComponent<GameMain>().fight)

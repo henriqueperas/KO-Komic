@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
@@ -12,6 +13,9 @@ public class Tutorial : MonoBehaviour
     [SerializeField] DialogueSystem ds;
     int currentInputCorret = 0;
 
+    public GameObject HUD;
+    public GameObject tutorial;
+    public GameObject gameManager;
 
     PlayerController pc;
     CombatSystem cs;
@@ -30,6 +34,8 @@ public class Tutorial : MonoBehaviour
         pc = player.GetComponent<PlayerController>();
         cs = player.GetComponentInChildren<CombatSystem>();
 
+        player.GetComponent<PlayerInput>().enabled = true;
+
         UpdateText();
     }
 
@@ -39,7 +45,7 @@ public class Tutorial : MonoBehaviour
         {
             ds.tutorial = true;
             ds.PlayerInput();
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
     }
 

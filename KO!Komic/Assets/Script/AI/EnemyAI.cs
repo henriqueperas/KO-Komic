@@ -7,11 +7,11 @@ public enum AIState { Idle, Chase, Attack, Block }
 public class EnemyAI : MonoBehaviour
 {
     [Header("Config")]
-    public float chaseDistance;
-    public float attackDistance;
-    public float decisionInterval;
-    public bool canAttack;
-    public int speed;
+    public float chaseDistance = 10f;
+    public float attackDistance = 5f;
+    public float decisionInterval = 2f;
+    public bool canAttack = false;
+    public int speed = 3;
 
     [Header("Referências")]
     public Transform player;
@@ -19,23 +19,36 @@ public class EnemyAI : MonoBehaviour
     Animator anim;
     //public ComboData[] availableCombos; // Seus ScriptableObjects de combo
 
-    private AIState currentState;
-    private float nextDecisionTime;
+    [SerializeField] AIState currentState;
+    private float nextDecisionTime = 3f;
 
+    public bool canFight = false;
 
     private void Start()
     {
-        //cs = GetComponent<CombatSystem>();
+        player = GameObject.Find("GameManager").GetComponent<GameMain>().player1.transform;
+        cs = GetComponentInChildren<CombatSystem>();
         anim = GetComponent<Animator>();
     }
     void Update()
     {
-        if (Time.time >= nextDecisionTime)
+        if (Time.time >= nextDecisionTime && canFight)
         {
             canAttack = true;
             DecideNextAction();
+            print("IA aqui indo");
             nextDecisionTime = Time.time + decisionInterval;
         }
+
+        if (canFight == false)
+        {
+            if(GetComponent<PlayerMain>().maxHealth > GetComponent<PlayerMain>().health)
+            {
+                GetComponent<PlayerMain>().health++;
+            }
+        }
+
+
 
         ExecuteCurrentState();
     }
@@ -43,6 +56,7 @@ public class EnemyAI : MonoBehaviour
     void DecideNextAction()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        print(distanceToPlayer);
         if (distanceToPlayer <= attackDistance)
         {
             currentState = Random.Range(0, 100) < 70 ? AIState.Attack : AIState.Block;
@@ -107,8 +121,10 @@ public class EnemyAI : MonoBehaviour
     {
         canAttack = false;
         //print(cs.attacks[Random.Range(0, cs.attacks.Length)].name);
-        cs.TryAttack(Random.Range(0, (cs.attacks.Length - 4)), 0);
+        cs.TryAttack(Random.Range(1, cs.attacks.Length), 0);
         //AttackData attack = availableAttacks[Random.Range(0, availableAttacks.Length)];
         // Executa um ataque único
+
+        //currentState = AIState.Idle;
     }
 }

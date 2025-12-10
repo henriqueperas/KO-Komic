@@ -43,12 +43,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  alignment: 7
+  spritePivot: {x: 0.5, y: 0}
+  spritePixelsToUnits: 240
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -108,7 +108,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: bloqueiopunkagachado-punk-anim0000_1
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 159
+        width: 1283
+        height: 1203
+      alignment: 9
+      pivot: {x: 0.635, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d2f384ce52fc0b41a3475a3951b58ae
+      internalID: -1623135873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -119,7 +140,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      bloqueiopunkagachado-punk-anim0000_0: 2011901600
+      bloqueiopunkagachado-punk-anim0000_1: -1623135873
+      bloqueiopunkagachado-punk-anim0000_2: 587876404
+      bloqueiopunkagachado-punk-anim0000_3: 1936391013
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
